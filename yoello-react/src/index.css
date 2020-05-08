@@ -24,6 +24,7 @@ ol, ul
     margin-bottom: 20px;
     text-align: center;
     font-size: 24px;
+    display: block;
 }
 
 .store-view
@@ -75,14 +76,32 @@ ol, ul
 
 .store
 {
-    display: flex;
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: row; */
     width: 100%;
 }
 
-.navigation-bar
+.nav-bar
 {
-    margin-left: 20px;
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: gray;
+}
+.nav-bar>button
+{
+    width: 100px;
+    margin: 10px;
+    text-align: center;
+    font-size: 20px;
+    background-color: inherit;
+    border: 0px;
+}
+.nav-bar button:first-child {
+    border-left: 0;
+}
+
+.nav-bar button:last-child {
+    border-right: 0;
 }
 
 .catalog
