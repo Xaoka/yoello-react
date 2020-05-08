@@ -1,21 +1,27 @@
 const https = require('https')
-const options = {
-  hostname: 'api.punkapi.com',
-  port: 443,
-  path: '/v2/beers?page=1&per_page=9',
-  method: 'GET'
+const options = require("./config.json");
+
+/**
+ * Callback for processing the api response
+ * @param {(data) => void} callback
+ * Makes an asynchronus api call to the backend
+ */
+export default async function punkApiRequest(callback)
+{
+    const req = https.request(options, result => {
+        // console.log(`statusCode: ${res.statusCode}`)
+      
+        result.on('data', data =>
+        {
+          console.log(`${data}`);
+          callback(JSON.parse(data));
+        })
+    })
+    
+    req.on('error', error => {
+        // console.error(error)
+        throw Error(`An error occured while communicating with PunkAPI:\n${error}`);
+    })
+    
+    req.end()
 }
-
-const req = https.request(options, res => {
-  console.log(`statusCode: ${res.statusCode}`)
-
-  res.on('data', d => {
-    console.log(`${d}`);
-  })
-})
-
-req.on('error', error => {
-  console.error(error)
-})
-
-req.end()

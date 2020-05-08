@@ -1,0 +1,6 @@
+{
+    "hostname": "api.punkapi.com",
+    "port": 443,
+    "path": "/v2/beers?page=1&per_page=9",
+    "method": "GET"
+}

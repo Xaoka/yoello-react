@@ -1,28 +1,38 @@
-body {
+body
+{
     font: 14px "Century Gothic", Futura, sans-serif;
-    margin: 20px;
-  }
-  
-  ol, ul {
+    margin: 0px;
+    background-color: darkred;
+}
+
+ol, ul
+{
     padding-left: 30px;
-  }
-  
-  .store-row:after {
+}
+
+.store-row:after
+{
     clear: both;
     content: "";
     display: table;
     width: 100%;
-  }
-  
-  .status {
-    margin-bottom: 10px;
-  }
-  
-  .square {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
+}
+
+.store-title
+{
+    margin: 10px;
+    margin-bottom: 20px;
+    text-align: center;
     font-size: 24px;
+}
+
+.storeItem
+{
+    background: #fff;
+    /* border: 1px solid #999; */
+    border: 0px;
+    float: left;
+    font-size: 14px;
     font-weight: bold;
     line-height: 34px;
     /* height: 120px; */
@@ -31,31 +41,43 @@ body {
     padding: 0;
     text-align: center;
     width: 33%;
+    height: 33%;
+}
+
+.storeItem>div
+{
     background-image: url("imgs/beer.jpg");
-    background-color: #cccccc;
+    
     background-size: cover;
-    padding-top: 33%; /* 1:1 Aspect Ratio */
-  }
-  
-  .square:focus {
+    background-color: #cccccc;
+    width: 100%;
+    border-radius: 8px;
+    height: 120px;
+}
+
+.storeItem:focus
+{
     outline: none;
-  }
-  
-  .kbd-navigation .square:focus {
+}
+
+.kbd-navigation .storeItem:focus
+{
     background: #ddd;
-  }
-  
-  .store {
+}
+
+.store
+{
     display: flex;
     flex-direction: row;
     width: 100%;
-  }
-  
-  .navigation-bar {
+}
+
+.navigation-bar
+{
     margin-left: 20px;
-  }
-  
-  .catalog
-  {
-      width: 100%;
-  }
+}
+
+.catalog
+{
+    width: 100%;
+}
