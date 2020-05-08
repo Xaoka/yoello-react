@@ -59,20 +59,22 @@ class StoreItem extends React.Component
       return (
         <div>
           <div className="store-title">{status}</div>
-          <div className="store-row">
-            {this.renderStoreItem(0)}
-            {this.renderStoreItem(1)}
-            {this.renderStoreItem(2)}
-          </div>
-          <div className="store-row">
-            {this.renderStoreItem(3)}
-            {this.renderStoreItem(4)}
-            {this.renderStoreItem(5)}
-          </div>
-          <div className="store-row">
-            {this.renderStoreItem(6)}
-            {this.renderStoreItem(7)}
-            {this.renderStoreItem(8)}
+          <div className="store-view">
+            <div className="store-row">
+                {this.renderStoreItem(0)}
+                {this.renderStoreItem(1)}
+                {this.renderStoreItem(2)}
+            </div>
+            <div className="store-row">
+                {this.renderStoreItem(3)}
+                {this.renderStoreItem(4)}
+                {this.renderStoreItem(5)}
+            </div>
+            <div className="store-row">
+                {this.renderStoreItem(6)}
+                {this.renderStoreItem(7)}
+                {this.renderStoreItem(8)}
+            </div>
           </div>
         </div>
       );

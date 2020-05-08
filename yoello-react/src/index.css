@@ -26,13 +26,18 @@ ol, ul
     font-size: 24px;
 }
 
+.store-view
+{
+    background-color: white;
+}
+
 .storeItem
 {
-    background: #fff;
+    /* background: #fff; */
     /* border: 1px solid #999; */
     border: 0px;
     float: left;
-    font-size: 14px;
+    font-size: 10px;
     font-weight: bold;
     line-height: 34px;
     /* height: 120px; */
@@ -42,6 +47,7 @@ ol, ul
     text-align: center;
     width: 33%;
     height: 33%;
+    background-color: white;
 }
 
 .storeItem>div
@@ -49,8 +55,10 @@ ol, ul
     background-image: url("imgs/beer.jpg");
     
     background-size: cover;
-    background-color: #cccccc;
-    width: 100%;
+    /* background-color: #cccccc; */
+    /* width: 100%; */
+    width: calc(100% - 0.5em);
+    border: 1px solid #999;
     border-radius: 8px;
     height: 120px;
 }
