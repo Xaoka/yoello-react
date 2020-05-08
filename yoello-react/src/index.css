@@ -3,11 +3,18 @@ body
     font: 14px "Century Gothic", Futura, sans-serif;
     margin: 0px;
     background-color: darkred;
+    overflow: hidden;
+    height: 100%;
 }
 
 ol, ul
 {
     padding-left: 30px;
+}
+
+.store-row
+{
+    margin-bottom: 1.0em;
 }
 
 .store-row:after
@@ -20,8 +27,7 @@ ol, ul
 
 .store-title
 {
-    margin: 10px;
-    margin-bottom: 20px;
+    margin: 15px;
     text-align: center;
     font-size: 24px;
     display: block;
@@ -30,6 +36,7 @@ ol, ul
 .store-view
 {
     background-color: white;
+    padding-top: 15px;
 }
 
 .storeItem
@@ -44,7 +51,7 @@ ol, ul
     /* height: 120px; */
     margin-right: -1px;
     margin-top: -1px;
-    padding: 0;
+    padding: 7px;
     text-align: center;
     width: 33%;
     height: 33%;
@@ -107,4 +114,7 @@ ol, ul
 .catalog
 {
     width: 100%;
+    height: calc(100%);
+    overflow: scroll;
+    
 }
