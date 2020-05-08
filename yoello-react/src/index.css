@@ -1,0 +1,61 @@
+body {
+    font: 14px "Century Gothic", Futura, sans-serif;
+    margin: 20px;
+  }
+  
+  ol, ul {
+    padding-left: 30px;
+  }
+  
+  .store-row:after {
+    clear: both;
+    content: "";
+    display: table;
+    width: 100%;
+  }
+  
+  .status {
+    margin-bottom: 10px;
+  }
+  
+  .square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    /* height: 120px; */
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 33%;
+    background-image: url("imgs/beer.jpg");
+    background-color: #cccccc;
+    background-size: cover;
+    padding-top: 33%; /* 1:1 Aspect Ratio */
+  }
+  
+  .square:focus {
+    outline: none;
+  }
+  
+  .kbd-navigation .square:focus {
+    background: #ddd;
+  }
+  
+  .store {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .navigation-bar {
+    margin-left: 20px;
+  }
+  
+  .catalog
+  {
+      width: 100%;
+  }
