@@ -109,6 +109,7 @@ ol, ul
     display: flex;
     flex-wrap: nowrap;
     background-color: var(--ui-grey);
+    justify-content: center;
 }
 .nav-bar>button
 {
@@ -137,4 +138,14 @@ ol, ul
     width: 100%;
     height: calc(100%);
     overflow: scroll;
+}
+
+.item-image
+{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
 }

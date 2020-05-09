@@ -30,7 +30,8 @@ class StoreItem extends React.Component
                     {
                         backgroundImage: `url("${this.props.value.image_url}")`
                     }
-                }></div>
+                }
+                ></div>
             </div>
             {name}<br/>
             (ABV{this.props.value.abv})
@@ -51,12 +52,16 @@ class StoreItem extends React.Component
         this.setState({storeEntries: storeEntries});
     }
 
-    renderStoreItem(i)
+    /**
+     * Item in the store to render
+     * @param {integer} itemIndex 
+     */
+    renderStoreItem(itemIndex)
     {
-        const entry = this.props.storeEntries[i];
+        const entry = this.props.storeEntries[itemIndex];
         return <StoreItem
         value={ entry || { name: "Loading", image_url: "imgs/beer.jpg" } }
-        onClick={() => this.props.onClick(i)}
+        onClick={() => this.props.onClick(itemIndex)}
         />;
     }
   
@@ -74,12 +79,6 @@ class StoreItem extends React.Component
                 {this.renderStoreItem(6)}
                 {this.renderStoreItem(7)}
                 {this.renderStoreItem(8)}
-            {/* </div>
-            <div className="store-row">
-            </div>
-            <div className="store-row">
-            <div className="store-row">
-            </div> */}
           </div>
         </div>
       );
@@ -100,20 +99,19 @@ class StoreItem extends React.Component
           catagory: ""
         };
     }
-
-    handleClick(i)
-    {
-    }
-
-    renderStoreItem(i)
-    {
-    }
   
     render()
     {
         // TODO: Fix code reuse
         return (
             <div className="nav-bar">
+                <button onClick={() => this.props.onClick(`ALL`)}
+                style =
+                {
+                    {
+                        color: this.props.catagory === "ALL" ? "white" : "lightgrey"
+                    }
+                }>ALL</button>
                 <button onClick={() => this.props.onClick(`PIZZA`)}
                 style =
                 {
@@ -128,13 +126,6 @@ class StoreItem extends React.Component
                         color: this.props.catagory === "STEAK" ? "white" : "lightgrey"
                     }
                 }>STEAK</button>
-                <button onClick={() => this.props.onClick(`ALL`)}
-                style =
-                {
-                    {
-                        color: this.props.catagory === "ALL" ? "white" : "lightgrey"
-                    }
-                }>ALL</button>
             </div>
         );
     }
@@ -151,35 +142,57 @@ class StoreItem extends React.Component
         this.windowStates = { CLOSED: "CLOSED", PREVIEW: "PREVIEW", OPEN: "OPEN" }
         this.state =
         {
-            windowState: this.windowStates.CLOSED
+            windowState: this.windowStates.CLOSED,
+            amount: 0
         }
     }
 
-    handleStateChage(state)
+    /**
+     * Sets the state if the input is a valid state
+     * @param {string} state 
+     */
+    handleStateChange(state)
     {
         if (!this.windowStates[state]) { throw Error(`Invalid cart state ${state} was set.`)}
         console.log(`Set state ${state}`)
         this.setState({ windowState: state });
     }
 
+    /**
+     * Toggles the window state between OPEN and CLOSED
+     */
     toggleOpen()
     {
-        if (this.state.windowState == this.windowStates.OPEN)
+        if (this.state.windowState === this.windowStates.OPEN)
         {
-            this.handleStateChage(this.windowStates.CLOSED);
+            this.handleStateChange(this.windowStates.CLOSED);
         }
         else
         {
-            this.handleStateChage(this.windowStates.OPEN);
+            this.handleStateChange(this.windowStates.OPEN);
         }
+    }
+
+    /**
+     * Sets the amount of the item to purchase
+     * @param {integer} amount 
+     */
+    setAmount(amount)
+    {
+        if (amount === this.amount) { return; }
+        // this.setState({...this.state, amount});
     }
   
     render()
     {
         let offset;
-        if (this.state.windowState == this.windowStates.CLOSED && this.props.item)
+        if (this.state.windowState === this.windowStates.CLOSED && this.props.item)
         {
-            this.state.windowState = this.windowStates.PREVIEW;
+            this.setState({...this.state, windowState: this.windowStates.PREVIEW});
+        }
+        else if (this.state.windowState === this.windowStates.PREVIEW && !this.props.item)
+        {
+            this.setState({...this.state, windowState: this.windowStates.CLOSED});
         }
         switch (this.state.windowState)
         {
@@ -211,15 +224,18 @@ class StoreItem extends React.Component
                                     {
                                         backgroundImage: `url("${item.image_url}")`
                                     }
-                                }>
+                                }
+                            >
                             </img>
                             <div>£00</div>
                         </div>
-                        <button className="delete-button"></button>
+                        <button className="delete-button"
+                        onClick={this.props.clearItem}></button>
                         <span>
                             <ItemPurchaseSummary
                             item={item}
-                            amount={0}/>
+                            amount={this.state.amount}
+                            setAmount={(v) => this.setAmount(v)}/>
                             <div id="summary">
                                 <div className="ui-group">
                                     <div className="cart-text">Tips for waiters</div>
@@ -254,11 +270,6 @@ class StoreItem extends React.Component
    */
   class ItemPurchaseSummary extends React.Component
   {
-    constructor(props)
-    {
-        super(props);
-    }
-  
     render()
     {
         const item = this.props.item || { name: "Loading", description: "Loading", image_url: "imgs/beer.jpg" };
@@ -266,9 +277,11 @@ class StoreItem extends React.Component
             <span>
                 <span id="beer-name" className="cart-text">{item.name}</span>
                 <span className="button-group">
-                    <button className="amount-button">-</button>
+                    <button className="amount-button"
+                    onClick={this.props.setAmount(this.props.amount-1)}>-</button>
                     <span  className="cart-text">{this.props.amount}</span>
-                    <button className="amount-button">+</button>
+                    <button className="amount-button"
+                    onClick={this.props.setAmount(this.props.amount+1)}>+</button>
                 </span>
                 <span id="description" className="cart-text">{item.description}</span>
             </span>
@@ -288,6 +301,12 @@ class StoreItem extends React.Component
         return (
             <div className="float-window">
                 <div className="content">
+                    <img className="item-image"
+                    style=
+                    {{
+                        backgroundImage: `url("${item.image_url}")`
+                    }}
+                    />
                     <span>
                         <div className="title-text">{item.name}</div>
                         <div className="cart-text">
@@ -297,8 +316,6 @@ class StoreItem extends React.Component
                             <div>{this.truncate(`Pairs well with; ${item.food_pairing.join(", ")}`, 80)}</div>
                         </div>
                     </span>
-                    <img>
-                    </img>
                 </div>
                 <div className="button-group">
                     <button
@@ -355,11 +372,19 @@ class StoreItem extends React.Component
         })
     }
 
-    handleItemSelected(i)
+    /**
+     * Event handler callback for when an item is initially selected
+     * @param {integer} itemIndex
+     */
+    handleItemSelected(itemIndex)
     {
-        this.setState({...this.state, previewItem: this.catalogData[i]});
+        this.setState({...this.state, previewItem: this.catalogData[itemIndex]});
     }
 
+    /**
+     * Event callback handler when an item catagory is selected
+     * @param {string} catagory 
+     */
     handleCatagorySelected(catagory)
     {
         console.log(`${catagory} selected from "${Object.keys(this.filters)}"`)
@@ -368,6 +393,10 @@ class StoreItem extends React.Component
         this.setState({ ...this.state, storeEntries: entries, catagory})
     }
 
+    /**
+     * Event callback handler when an item is added to pre-cart (Amount selection)
+     * @param {Item} item 
+     */
     itemAddedToPreCart(item)
     {
         this.setState({...this.state, previewItem: null, preCartItem: item})
@@ -389,7 +418,8 @@ class StoreItem extends React.Component
                 />
             </div>
             <Cart
-            item={this.state.preCartItem}/>
+            item={this.state.preCartItem}
+            clearItem={() => this.itemAddedToPreCart(null)}/>
             <ItemPreview
             item={this.state.previewItem}
             onClick={(i) => this.itemAddedToPreCart(i)}/>
