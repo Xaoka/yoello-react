@@ -140,15 +140,34 @@ class StoreItem extends React.Component
     {
         super(props);
         this.windowStates = { CLOSED: "CLOSED", PREVIEW: "PREVIEW", OPEN: "OPEN" }
+        this.tipStyles =
+        {
+            ZERO: (sub) => 0,
+            ROUND_UP: (sub) => 1 - (sub % 1),
+            TEN_PERCENT: (sub) => sub * 0.1,
+            CUSTOM: (sub) => sub
+        }
         this.state =
         {
             windowState: this.windowStates.CLOSED,
-            amount: 0
+            amount: 0,
+            tipStyle: this.tipStyles.ROUND_UP,
+            items: []
         }
     }
 
     /**
      * Sets the state if the input is a valid state
+     * @param {string} style 
+     */
+    handleTipStyleChange(style)
+    {
+        console.log(`Set style ${style}`);
+        this.setState({ tipStyle: style });
+    }
+
+    /**
+     * Sets the tip style if the input is a valid tip style
      * @param {string} state 
      */
     handleStateChange(state)
@@ -186,6 +205,7 @@ class StoreItem extends React.Component
     render()
     {
         let offset;
+        // STATE NEEDS TO BE MANAGED ELSEWHERE
         if (this.state.windowState === this.windowStates.CLOSED && this.props.item)
         {
             this.setState({...this.state, windowState: this.windowStates.PREVIEW});
@@ -206,6 +226,14 @@ class StoreItem extends React.Component
                 offset = -550;
         }
         const item = this.props.item || { name: "Loading", description: "Loading", image_url: "imgs/beer.jpg" };
+        let subtotal = 0.00;
+        if (this.state.items.length > 0)
+        {
+            subtotal = this.state.items.reduce((item1, item2) => item1.abv + item2.abv);
+        }
+        const tip = this.state.tipStyle(subtotal);
+        const total = (subtotal + tip);
+        
         return (
             <div className="cart-panel"
             style={{bottom: offset}}>
@@ -240,17 +268,21 @@ class StoreItem extends React.Component
                                 <div className="ui-group">
                                     <div className="cart-text">Tips for waiters</div>
                                     <div className="button-group">
-                                        <button>ZERO</button>
-                                        <button>ROUND UP</button>
-                                        <button>10%</button>
-                                        <button>CUSTOM</button>
+                                        <button
+                                        onClick={() => this.handleTipStyleChange(this.tipStyles.ZERO)}>ZERO</button>
+                                        <button
+                                        onClick={() => this.handleTipStyleChange(this.tipStyles.ROUND_UP)}>ROUND UP</button>
+                                        <button
+                                        onClick={() => this.handleTipStyleChange(this.tipStyles.TEN_PERCENT)}>10%</button>
+                                        <button
+                                        onClick={() => this.handleTipStyleChange(this.tipStyles.CUSTOM)}>CUSTOM</button>
                                     </div>
                                 </div>
                                 <div className="ui-group">
-                                    <div className="cart-text">Subtotal<span className="cart-text">£10.01</span></div>
-                                    <div className="cart-text">Tips<span className="cart-text">£0.10</span></div>
+                                    <div className="cart-text">Subtotal<span className="cart-text">£{subtotal.toFixed(2)}</span></div>
+                                    <div className="cart-text">Tips<span className="cart-text">£{tip.toFixed(2)}</span></div>
                                 </div>
-                                <div className="cart-text">Total<span className="cart-text">£12.34</span></div>
+                                <div className="cart-text">Total<span className="cart-text">£{total.toFixed(2)}</span></div>
                                 <div className="button-group">
                                     <button className="cart-text">Confirm Payment</button>
                                 </div>
