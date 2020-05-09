@@ -8,7 +8,6 @@ const options = require("./config.json");
  */
 export default async function punkApiRequest(callback)
 {
-    let responseData = "";
     const req = https.request(options, result => {
         // console.log(`statusCode: ${res.statusCode}`)
       
@@ -19,18 +18,6 @@ export default async function punkApiRequest(callback)
             callback(JSON.parse(data));
         })
     })
-    // req.on('end', () =>
-    // {
-    //     try
-    //     {
-    //       const data = JSON.parse(responseData);
-    //       callback(data);
-    //     }
-    //     catch
-    //     {
-    //       throw Error(`Failed to parse ${responseData} into JSON`);
-    //     }
-    // });
     
     req.on('error', error => {
         // console.error(error)

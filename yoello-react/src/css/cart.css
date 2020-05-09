@@ -1,0 +1,175 @@
+
+/*
+* Shopping card swipe-up panel
+*/
+.cart-panel
+{
+    position: absolute;
+    bottom: -550px;
+    width: 100%;
+    transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-duration: 0.5s;
+}
+.cart-header
+{
+    width: 100%;
+    height: 60px;
+    background-color: var(--dark-navy);
+    border-radius: 20px;
+    text-align: center;
+    padding-top: 10px;
+    font-weight: bolder;
+    color: lightgray;
+    margin-bottom: -25px;
+}
+
+.cart-header>div, .cart-header>img
+{
+    display: inline;
+}
+.cart-header>img
+{
+    content: url("../imgs/cart.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 1.5em;
+    height: 1.5em;
+    padding-right: 10px;
+}
+.cart-header>div
+{
+    margin-bottom: 10px;
+    vertical-align: 0.2em;
+}
+
+.cart-body
+{
+    height: 550px;
+    width: 100%;
+    background-color: var(--dark-navy);
+}
+
+/*
+* Elements for selecting purchase amount
+*/
+#purchase-panel
+{
+    padding: 15px;
+}
+
+#item-cost>div
+{
+    /** Do nicer */
+    position: relative;
+    left: -20px;
+    background-color: rgba(255, 210, 0, 0.8);
+    border-radius: 5px;
+    display: initial;
+    padding: 3px;
+}
+
+#item-cost>img
+{
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: var(--ui-grey);
+    float: left;
+    border-radius: 10px;
+}
+
+#purchase-panel>span
+{
+    vertical-align: top;
+    margin: auto;
+}
+#purchase-panel>div, #purchase-panel>img
+{
+    display: inline;
+}
+#item-details>#beer-name
+{
+    font-weight: bolder;
+}
+
+.amount-selector
+{
+    padding: 5px;
+    right: 0px;
+}
+
+.delete-button
+{
+    background-image: url("../imgs/delete.png");
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-width: 0px;
+    background-color: transparent;
+    right: 0px;
+    float: right;
+}
+.button-group>button
+{
+    border: yellow;
+    background-color: yellow;
+    color: var(--dark-navy);
+    font-weight: bolder;
+    font-size: 15px;
+    /* width: 40px; */
+    height: 25px;
+    border-width: 1px;
+    border-style: solid;
+    padding: 2px 0.25em;
+    margin: 0px 1px;
+}
+.button-group>button:disabled
+{
+    border: lightgray;
+    color: white;
+    color: darkgray;
+}
+.button-group>button:first-of-type
+{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.button-group>button:last-of-type
+{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#description
+{
+    display: inline-block;
+    font-size: 11px;
+    padding-top: 15px;
+    color: gray;
+}
+
+#summary
+{
+    bottom: 50px;
+    position: absolute;
+}
+
+#summary>div>span, .ui-group>div>span
+{
+    float: right;
+}
+
+.ui-group
+{
+    padding-bottom: 30px;
+}
+
+.ui-group>div
+{
+    padding: 3px;
+}

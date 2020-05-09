@@ -1,10 +1,33 @@
+@import "cart.css";
+@import "preview.css";
+
+:root
+{
+    --dark-navy: rgb(13, 13, 16);
+    --ui-grey: rgb(40, 40, 45);
+}
+
 body
 {
     font: 14px "Century Gothic", Futura, sans-serif;
     margin: 0px;
-    background-color: darkred;
+    background-color: white;
     overflow: hidden;
     height: 100%;
+}
+
+.cart-text
+{
+    color: gray;
+    font-size: 14px;
+}
+
+.title-text
+{
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 10px;
 }
 
 ol, ul
@@ -12,25 +35,14 @@ ol, ul
     padding-left: 30px;
 }
 
-.store-row
-{
-    margin-bottom: 1.0em;
-}
-
-.store-row:after
-{
-    clear: both;
-    content: "";
-    display: table;
-    width: 100%;
-}
-
 .store-title
 {
-    margin: 15px;
+    padding: 15px;
     text-align: center;
     font-size: 24px;
     display: block;
+    font-weight: bolder;
+    background-color: red;
 }
 
 .store-view
@@ -39,46 +51,47 @@ ol, ul
     padding-top: 15px;
 }
 
+/*
+* Single item in the store, it's image and title
+*/
 .storeItem
 {
-    /* background: #fff; */
-    /* border: 1px solid #999; */
     border: 0px;
     float: left;
     font-size: 10px;
     font-weight: bold;
     line-height: 34px;
-    /* height: 120px; */
     margin-right: -1px;
     margin-top: -1px;
-    padding: 7px;
+    padding: 5px;
     text-align: center;
     width: 33%;
     height: 33%;
     background-color: white;
+    line-height: 2em;
 }
 
 .storeItem>div
 {
-    background-image: url("imgs/beer.jpg");
-    
-    background-size: cover;
-    /* background-color: #cccccc; */
-    /* width: 100%; */
     width: calc(100% - 0.5em);
     border: 1px solid #999;
     border-radius: 8px;
     height: 120px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.storeItem>div>div
+{   
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    height: 100%;
 }
 
 .storeItem:focus
 {
     outline: none;
-}
-
-.kbd-navigation .storeItem:focus
-{
-    background: #ddd;
 }
 
 .store
@@ -88,11 +101,14 @@ ol, ul
     width: 100%;
 }
 
+/*
+* Bar at the top of the app for navigating the store
+*/
 .nav-bar
 {
     display: flex;
     flex-wrap: nowrap;
-    background-color: gray;
+    background-color: var(--ui-grey);
 }
 .nav-bar>button
 {
@@ -102,6 +118,8 @@ ol, ul
     font-size: 20px;
     background-color: inherit;
     border: 0px;
+    font-weight: bold;
+    color: lightgray;
 }
 .nav-bar button:first-child {
     border-left: 0;
@@ -111,10 +129,12 @@ ol, ul
     border-right: 0;
 }
 
+/*
+* Grid of store items available
+*/
 .catalog
 {
     width: 100%;
     height: calc(100%);
     overflow: scroll;
-    
 }

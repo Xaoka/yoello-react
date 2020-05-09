@@ -1,0 +1,32 @@
+.float-window
+{
+    border-radius: 15px;
+    border-radius: 15px;
+    width: 90%;
+    height: 250px;
+    position: absolute;
+    top: 20%;
+    right: 5%;
+    left: 5%;
+    background-color: var(--ui-grey);
+}
+
+.float-window>.content
+{
+    padding: 35px;
+}
+.float-window>.button-group
+{
+    position: inherit;
+    bottom: 10px;
+    right: 10px;
+}
+
+.float-window>.button-group>button
+{
+    background-color: white;
+    border-color: white;
+
+    padding: 15px 25px;
+    padding-bottom: 30px;
+}
