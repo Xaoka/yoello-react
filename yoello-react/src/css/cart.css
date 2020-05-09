@@ -30,9 +30,6 @@
 .cart-header>img
 {
     content: url("../imgs/cart.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
     width: 1.5em;
     height: 1.5em;
     padding-right: 10px;
@@ -103,9 +100,6 @@
     background-image: url("../imgs/delete.png");
     width: 30px;
     height: 30px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
     border-width: 0px;
     background-color: transparent;
     right: 0px;

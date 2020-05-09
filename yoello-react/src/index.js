@@ -24,7 +24,7 @@ class StoreItem extends React.Component
             // background-image=url("imgs/beer.jpg");
         >
             <div>
-                <div
+                <div className="item-image"
                 style=
                 {
                     {
@@ -218,7 +218,7 @@ class StoreItem extends React.Component
                 <div className="cart-body">
                     <div id="purchase-panel">
                         <div id="item-cost">
-                            <img
+                            <img className="item-image"
                                 style=
                                 {
                                     {
