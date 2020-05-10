@@ -8,7 +8,7 @@ import truncate from '../utils/text'
     render()
     {
         const item = this.props.item;
-        if (!item) { return null; }
+        if (!item) { return null; } // TODO: Change to allow anim
         return (
             <div className="float-window">
                 <div className="close-button" id="preview-close"
@@ -34,7 +34,7 @@ import truncate from '../utils/text'
                 </div>
                 <div className="button-group">
                     <button
-                    onClick={() => this.props.onClick(item)}>ADD TO CART</button>
+                    onClick={() => this.props.onClick(item, 1)}>ADD TO CART</button>
                 </div>
             </div>
         );

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import truncate from '../utils/text.js'
 
 /**
@@ -29,7 +28,7 @@ export default class StoreItem extends React.Component
                 ></div>
             </div>
             {truncate(this.props.value.name, 20)}<br/>
-            (ABV{this.props.value.abv})
+            (ABV {this.props.value.abv})
         </button>
         );
     }

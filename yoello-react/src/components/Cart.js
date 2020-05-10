@@ -1,6 +1,7 @@
 import React from 'react';
 import clamp from '../utils/math';
-import ItemPurchaseSummary from './ItemPurchaseSummary'
+import CartItem from './CartItem';
+import { formatAsCurrency } from '../utils/text';
   /**
    * Component for handling shopping cart display and animation
    */
@@ -13,7 +14,7 @@ import ItemPurchaseSummary from './ItemPurchaseSummary'
         this.tipStyles =
         {
             ZERO: (sub) => 0,
-            ROUND_UP: (sub) => 1 - (sub % 1),
+            ROUND_UP: (sub) => 100 - (sub % 100),
             TEN_PERCENT: (sub) => sub * 0.1,
             CUSTOM: (sub) => sub
         }
@@ -21,9 +22,7 @@ import ItemPurchaseSummary from './ItemPurchaseSummary'
         this.state =
         {
             windowState: this.windowStates.CLOSED,
-            amount: 1,
-            tipStyle: this.tipStyles.ROUND_UP,
-            items: []
+            tipStyle: this.tipStyles.ROUND_UP
         }
     }
 
@@ -47,14 +46,14 @@ import ItemPurchaseSummary from './ItemPurchaseSummary'
         if (!this.windowStates[state]) { throw Error(`Invalid cart state ${state} was set.`)}
         let newState = state;
         
-        if (this.state.windowState === this.windowStates.CLOSED && this.props.item)
-        {
-            newState = this.windowStates.PREVIEW;
-        }
-        else if (this.state.windowState === this.windowStates.PREVIEW && !this.props.item)
-        {
-            newState = this.windowStates.CLOSED;
-        }
+        // if (this.state.windowState === this.windowStates.CLOSED && this.props.item)
+        // {
+        //     newState = this.windowStates.PREVIEW;
+        // }
+        // else if (this.state.windowState === this.windowStates.PREVIEW && !this.props.item)
+        // {
+        //     newState = this.windowStates.CLOSED;
+        // }
         this._internalState = newState;
         this.setState({...this.state, windowState: state});
     }
@@ -82,9 +81,42 @@ import ItemPurchaseSummary from './ItemPurchaseSummary'
     {
         this.setState({...this.state, amount: clamp(amount, 0, this.props.storeConfig.cart.maxUnits)});
     }
+
+    renderTipButton(style, text)
+    {
+        return (
+            <button
+                onClick={() => this.handleTipStyleChange(style)}>{text}</button>
+        )
+    }
+
+    renderCartItems()
+    {
+        const itemEntryKeys = Object.keys(this.props.items);
+        if (itemEntryKeys.length > 0)
+        {
+            const itemsJSX = [];
+            for (const key of itemEntryKeys)
+            {
+                const item = this.props.items[key];
+                console.log(`CART ITEM ${item}`);
+                itemsJSX.push(<CartItem
+                    item={item.item}
+                    amount={item.amount}
+                    setAmount={(v) => this.setAmount(v)}
+                    config={this.props.storeConfig}/>)
+            }
+            return itemsJSX;
+        }
+        else
+        {
+            return (<span className="summary-text">Nothing in cart, go on, treat yourself!</span>)
+        }
+    }
   
     render()
     {
+        // Calculate how far up to slide the window
         let offset;
         switch (this._internalState)
         {
@@ -97,15 +129,22 @@ import ItemPurchaseSummary from './ItemPurchaseSummary'
             default:
                 offset = -550;
         }
-        const item = this.props.item || { name: "Loading", description: "Loading", image_url: "imgs/beer.jpg" };
+
+        // Caclulate the cart data
         let subtotal = 0.00;
-        if (this.state.items.length > 0)
+        for (const key of Object.keys(this.props.items))
         {
-            subtotal = this.state.items.reduce((item1, item2) => item1.abv + item2.abv);
+            console.log(`Key ${key}, ${this.props.items[key]}`);
+            subtotal += this.props.items[key].item.price;
         }
+        // if (this.state.items.length > 0)
+        // {
+        //     subtotal = this.state.items.reduce((item1, item2) => item1.price + item2.price);
+        // }
         const tip = this.state.tipStyle(subtotal);
         const total = (subtotal + tip);
         
+        // Render out the cart
         return (
             <div className="cart-panel"
             style={{bottom: offset}}>
@@ -117,45 +156,23 @@ import ItemPurchaseSummary from './ItemPurchaseSummary'
                 </div>
                 <div className="cart-body">
                     <div id="purchase-panel">
-                        <div id="item-cost">
-                            <img className="item-image"
-                                style=
-                                {
-                                    {
-                                        backgroundImage: `url("${item.image_url}")`
-                                    }
-                                }
-                            >
-                            </img>
-                            <div className="sub-heading">£{(item.abv * 2).toFixed(2)}</div>
-                        </div>
-                        <button className="delete-button"
-                        onClick={this.props.clearItem}></button>
+                        {this.renderCartItems()}
                         <span>
-                            <ItemPurchaseSummary
-                            item={item}
-                            amount={this.state.amount}
-                            setAmount={(v) => this.setAmount(v)}
-                            config={this.props.storeConfig}/>
                             <div id="summary">
                                 <div className="ui-group">
                                     <div className="summary-text">Tips for waiters</div>
                                     <div className="button-group">
-                                        <button
-                                        onClick={() => this.handleTipStyleChange(this.tipStyles.ZERO)}>ZERO</button>
-                                        <button
-                                        onClick={() => this.handleTipStyleChange(this.tipStyles.ROUND_UP)}>ROUND UP</button>
-                                        <button
-                                        onClick={() => this.handleTipStyleChange(this.tipStyles.TEN_PERCENT)}>10%</button>
-                                        <button
-                                        onClick={() => this.handleTipStyleChange(this.tipStyles.CUSTOM)}>CUSTOM</button>
+                                        {this.renderTipButton(this.tipStyles.ZERO, "ZERO")}
+                                        {this.renderTipButton(this.tipStyles.ROUND_UP, "ROUND UP")}
+                                        {this.renderTipButton(this.tipStyles.TEN_PERCENT, "10%")}
+                                        {this.renderTipButton(this.tipStyles.CUSTOM, "CUSTOM")}
                                     </div>
                                 </div>
                                 <div className="ui-group">
-                                    <div className="summary-text">Subtotal<span className="summary-text">£{subtotal.toFixed(2)}</span></div>
-                                    <div className="summary-text">Tips<span className="summary-text">£{tip.toFixed(2)}</span></div>
+                                    <div className="summary-text">Subtotal<span className="summary-text">{formatAsCurrency(subtotal)}</span></div>
+                                    <div className="summary-text">Tips<span className="summary-text">{formatAsCurrency(tip)}</span></div>
                                 </div>
-                                <div className="summary-bold-text">Total<span className="summary-bold-text">£{total.toFixed(2)}</span></div>
+                                <div className="summary-bold-text">Total<span className="summary-bold-text">{formatAsCurrency(total)}</span></div>
                                 <div className="button-group">
                                     <button className="summary-text">Confirm Payment</button>
                                 </div>

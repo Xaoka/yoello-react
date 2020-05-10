@@ -55,11 +55,18 @@
     padding: 15px;
 }
 
+#item-cost
+{
+    padding-right: 30px;
+    display: inline-block;
+}
+
 #item-cost>div
 {
     /** Do nicer */
     position: relative;
-    left: -20px;
+    margin-right: -20px;
+    /* left: -20px; */
     background-color: var(--yoello-yellow);
     border-radius: 5px;
     display: initial;
@@ -67,8 +74,8 @@
 
 #item-cost>img
 {
-    width: 50px;
-    height: 50px;
+    width: 65px;
+    height: 65px;
     background-color: var(--ui-grey);
     float: left;
     border-radius: 10px;
@@ -79,10 +86,20 @@
     vertical-align: top;
     margin: auto;
 }
-#purchase-panel>div, #purchase-panel>img
+#purchase-panel>span>span
+{
+    vertical-align: top;
+}
+#purchase-panel>img
 {
     display: inline;
 }
+
+#purchase-panel>span>.button-group
+{
+    float: right;
+}
+
 #item-details>#beer-name
 {
     font-weight: bolder;
@@ -143,9 +160,8 @@
 
 #description
 {
-    display: inline-block;
     font-size: 11px;
-    padding-top: 15px;
+    /* padding-top: 15px; */
     color: gray;
 }
 

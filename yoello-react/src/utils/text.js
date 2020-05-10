@@ -1,5 +1,5 @@
 
-// TODO: Utility
+
 export default function truncate(str, len)
 {
     if (str.length > len)
@@ -10,4 +10,9 @@ export default function truncate(str, len)
     {
         return str;
     }
+}
+
+export function formatAsCurrency(valueInPennies)
+{
+    return `£${(valueInPennies/100).toFixed(2)}`;
 }

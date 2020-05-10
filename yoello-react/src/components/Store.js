@@ -31,13 +31,18 @@ import { punkApiRequest, initRequest } from '../punkapi/api.js';
           navFilter: this.filters[0],
           catagory: "",
           previewItem: null,
-          preCartItem: null
+          cart: {}
         };
         punkApiRequest((data) =>
         {
             // const beers = data.map((beer) => beer.name);
             // console.log(beers);
-            this.catalogData = data;
+            this.catalogData = data.map(entry =>
+                { return {
+                    ...entry,
+                    // Dummy price out as double abv, in pennies
+                    price: entry.abv * 2 * 100
+                }});
             // this.setState({ storeEntries: data });
             this.handleCatagorySelected(`ALL`);
         })
@@ -68,9 +73,14 @@ import { punkApiRequest, initRequest } from '../punkapi/api.js';
      * Event callback handler when an item is added to pre-cart (Amount selection)
      * @param {Item} item 
      */
-    itemAddedToPreCart(item)
+    updateCartEntry(item, amount)
     {
-        this.setState({...this.state, previewItem: null, preCartItem: item})
+        const itemEntry = this.state.cart[item.name] || { amount: 0, item };
+        itemEntry.amount = amount;
+        const newCart = this.state.cart;
+        newCart[item.name] = itemEntry;
+        // console.log(`Added entry to cart ${JSON.stringify(itemEntry)}`)
+        this.setState({...this.state, previewItem: null, cart: newCart})
     }
 
     render()
@@ -90,12 +100,12 @@ import { punkApiRequest, initRequest } from '../punkapi/api.js';
                 />
             </div>
             <Cart
-            item={this.state.preCartItem}
-            clearItem={() => this.itemAddedToPreCart(null)}
+            items={this.state.cart}
+            clearItem={() => null}//this.itemAddedToPreCart(null)}
             storeConfig={this.storeConfig}/>
             <ItemPreview
             item={this.state.previewItem}
-            onClick={(i) => this.itemAddedToPreCart(i)}/>
+            onClick={(item, amount) => this.updateCartEntry(item, amount)}/>
         </div>
         );
     }
