@@ -52,7 +52,13 @@
 */
 #purchase-panel
 {
-    padding: 15px;
+    padding: 0px 10px;
+    padding-top: 10px;
+}
+
+.margin-overflow>span
+{
+    margin-left: -30px;
 }
 
 #item-cost
@@ -66,7 +72,9 @@
     /** Do nicer */
     position: relative;
     margin-right: -20px;
-    /* left: -20px; */
+    width: 50px;
+    right: -40px;
+    top: -70px;
     background-color: var(--yoello-yellow);
     border-radius: 5px;
     display: initial;
@@ -86,16 +94,12 @@
     vertical-align: top;
     margin: auto;
 }
-#purchase-panel>span>span
+#purchase-panel>div>div>span
 {
     vertical-align: top;
 }
-#purchase-panel>img
-{
-    display: inline;
-}
 
-#purchase-panel>span>.button-group
+#purchase-panel>div>div>span>.button-group
 {
     float: right;
 }
@@ -111,6 +115,10 @@
     right: 0px;
 }
 
+.amount-button
+{
+    width: 1.5em;
+}
 .delete-button
 {
     background-image: url("../imgs/delete.png");
@@ -135,7 +143,7 @@
     height: 25px;
     border-width: 1px;
     border-style: solid;
-    padding: 2px 0.25em;
+    /* padding: 2px 0.25em; */
     margin: 0px 1px;
     border-style: solid;
 }
@@ -162,13 +170,17 @@
 {
     font-size: 11px;
     /* padding-top: 15px; */
+    display: inline-block;
     color: gray;
 }
 
 #summary
 {
-    bottom: 50px;
+    padding-bottom: 50px;
+    width: calc(100% - 100px);
+    margin: 0px 50px;
     position: absolute;
+    bottom: 0px;
 }
 
 #summary>div>span, .ui-group>div>span
@@ -179,4 +191,11 @@
 .ui-group
 {
     padding-bottom: 30px;
+}
+
+.scroll-panel
+{
+    height: 200px;
+    padding: 10px 0px;
+    overflow-y: scroll;
 }

@@ -4,6 +4,7 @@ import Catalog from './Catalog.js';
 import CatagoryNavBar from './CatagoryNavBar.js';
 import ItemPreview from './ItemPreview.js';
 import Cart from './Cart.js';
+import clamp from '../utils/math.js';
 import { punkApiRequest, initRequest } from '../punkapi/api.js';
   
   /**
@@ -76,7 +77,7 @@ import { punkApiRequest, initRequest } from '../punkapi/api.js';
     updateCartEntry(item, amount)
     {
         const itemEntry = this.state.cart[item.name] || { amount: 0, item };
-        itemEntry.amount = amount;
+        itemEntry.amount = clamp(amount, 0, this.storeConfig.cart.maxUnits);
         const newCart = this.state.cart;
         newCart[item.name] = itemEntry;
         // console.log(`Added entry to cart ${JSON.stringify(itemEntry)}`)
@@ -101,6 +102,7 @@ import { punkApiRequest, initRequest } from '../punkapi/api.js';
             </div>
             <Cart
             items={this.state.cart}
+            updateCartEntry={(item, amount) => this.updateCartEntry(item, amount)}
             clearItem={() => null}//this.itemAddedToPreCart(null)}
             storeConfig={this.storeConfig}/>
             <ItemPreview

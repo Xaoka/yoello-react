@@ -29,7 +29,7 @@ export default class CatagoryNavBar extends React.Component
   render()
   {
       return (
-          <div className="nav-bar">
+          <div className="nav-bar flex-fill">
               {this.renderButton("ALL")}
               {this.renderButton("PIZZA")}
               {this.renderButton("STEAK")}

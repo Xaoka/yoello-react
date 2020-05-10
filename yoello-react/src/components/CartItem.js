@@ -5,10 +5,16 @@ import React from 'react';
 */
 export default class CartItem extends React.Component
 {
+    renderAmountButton(func, limit, text)
+    {
+        return <button className="amount-button"
+        onClick={() => this.props.setAmount(this.props.item, func(this.props.amount))}disabled={this.props.amount === limit}>{text}</button>
+    }
+
     render()
     {
         return (
-            <span>
+            <div className="margin-overflow">
                 <div id="item-cost">
                     <img className="item-image"
                         style=
@@ -25,18 +31,15 @@ export default class CartItem extends React.Component
                 onClick={this.props.clearItem}></button>
                 <span>
                     <span id="beer-name" className="summary-bold-text">{this.props.item.name}</span>
-                </span>
                 <span className="button-group">
-                    <button className="amount-button"
-                    onClick={() => this.props.setAmount(this.props.amount - 1)}disabled={this.props.amount === 0}>-</button>
+                    {this.renderAmountButton((v) => v - 1, 0, '-')}
                     <span  className="summary-text">{this.props.amount}</span>
-                    <button className="amount-button"
-                    onClick={() => this.props.setAmount(this.props.amount + 1)}
-                    disabled={this.props.amount === this.props.maxUnits}>+</button>
+                    {this.renderAmountButton((v) => v + 1, this.props.config.cart.maxUnits, '+')}
                 </span>
-                    <span id="description" className="summary-text">{this.props.item.tagline} ABV {this.props.item.abv}</span>
+                <div id="description" className="summary-text">{this.props.item.tagline} ABV {this.props.item.abv}</div>
+                </span>
                 
-            </span>
+            </div>
         );
     }
 }

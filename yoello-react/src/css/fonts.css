@@ -18,6 +18,12 @@
     color: white;
 }
 
+.centre-text
+{
+    text-align: center;
+    display: inherit;
+}
+
 .title-text
 {
     color: white;

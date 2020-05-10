@@ -73,15 +73,6 @@ import { formatAsCurrency } from '../utils/text';
         }
     }
 
-    /**
-     * Sets the amount of the item to purchase
-     * @param {integer} amount 
-     */
-    setAmount(amount)
-    {
-        this.setState({...this.state, amount: clamp(amount, 0, this.props.storeConfig.cart.maxUnits)});
-    }
-
     renderTipButton(style, text)
     {
         return (
@@ -99,18 +90,17 @@ import { formatAsCurrency } from '../utils/text';
             for (const key of itemEntryKeys)
             {
                 const item = this.props.items[key];
-                console.log(`CART ITEM ${item}`);
-                itemsJSX.push(<CartItem
+                itemsJSX.push(<CartItem key={key}
                     item={item.item}
                     amount={item.amount}
-                    setAmount={(v) => this.setAmount(v)}
+                    setAmount={(item, amount) => this.props.updateCartEntry(item, amount)}
                     config={this.props.storeConfig}/>)
             }
             return itemsJSX;
         }
         else
         {
-            return (<span className="summary-text">Nothing in cart, go on, treat yourself!</span>)
+            return (<span className="centre-text summary-text">Nothing in cart, go on, treat yourself!</span>)
         }
     }
   
@@ -132,15 +122,12 @@ import { formatAsCurrency } from '../utils/text';
 
         // Caclulate the cart data
         let subtotal = 0.00;
-        for (const key of Object.keys(this.props.items))
+        const entries = Object.values(this.props.items);
+        if (entries.length > 0)
         {
-            console.log(`Key ${key}, ${this.props.items[key]}`);
-            subtotal += this.props.items[key].item.price;
+            subtotal = entries.map((entry) => {return entry.item.price * entry.amount}).reduce((item1, item2) => item1 + item2);
         }
-        // if (this.state.items.length > 0)
-        // {
-        //     subtotal = this.state.items.reduce((item1, item2) => item1.price + item2.price);
-        // }
+
         const tip = this.state.tipStyle(subtotal);
         const total = (subtotal + tip);
         
@@ -156,29 +143,28 @@ import { formatAsCurrency } from '../utils/text';
                 </div>
                 <div className="cart-body">
                     <div id="purchase-panel">
-                        {this.renderCartItems()}
-                        <span>
-                            <div id="summary">
-                                <div className="ui-group">
-                                    <div className="summary-text">Tips for waiters</div>
-                                    <div className="button-group">
-                                        {this.renderTipButton(this.tipStyles.ZERO, "ZERO")}
-                                        {this.renderTipButton(this.tipStyles.ROUND_UP, "ROUND UP")}
-                                        {this.renderTipButton(this.tipStyles.TEN_PERCENT, "10%")}
-                                        {this.renderTipButton(this.tipStyles.CUSTOM, "CUSTOM")}
-                                    </div>
-                                </div>
-                                <div className="ui-group">
-                                    <div className="summary-text">Subtotal<span className="summary-text">{formatAsCurrency(subtotal)}</span></div>
-                                    <div className="summary-text">Tips<span className="summary-text">{formatAsCurrency(tip)}</span></div>
-                                </div>
-                                <div className="summary-bold-text">Total<span className="summary-bold-text">{formatAsCurrency(total)}</span></div>
+                        <div className="scroll-panel">
+                            {this.renderCartItems()}
+                        </div>
+                        <div id="summary">
+                            <div className="ui-group">
+                                <div className="summary-text">Tips for waiters</div>
                                 <div className="button-group">
-                                    <button className="summary-text">Confirm Payment</button>
+                                    {this.renderTipButton(this.tipStyles.ZERO, "ZERO")}
+                                    {this.renderTipButton(this.tipStyles.ROUND_UP, "ROUND UP")}
+                                    {this.renderTipButton(this.tipStyles.TEN_PERCENT, "10%")}
+                                    {this.renderTipButton(this.tipStyles.CUSTOM, "CUSTOM")}
                                 </div>
                             </div>
-                            
-                        </span>
+                            <div className="ui-group">
+                                <div className="summary-text">Subtotal<span className="summary-text">{formatAsCurrency(subtotal)}</span></div>
+                                <div className="summary-text">Tips<span className="summary-text">{formatAsCurrency(tip)}</span></div>
+                            </div>
+                            <div className="summary-bold-text">Total<span className="summary-bold-text">{formatAsCurrency(total)}</span></div>
+                            <div className="button-group">
+                                <button className="summary-text">Confirm Payment</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

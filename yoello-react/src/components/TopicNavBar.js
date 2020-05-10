@@ -33,7 +33,7 @@ export default class TopicNavBar extends React.Component
   {
       // TODO: Fix code reuse
       return (
-          <div className="nav-bar">
+          <div className="nav-bar flex-fill">
               {this.renderImage("COFFEE", "imgs/coffee.jpg")}
               {this.renderImage("CUTLERY", "imgs/cutlery.png")}
               {this.renderImage("PERCENT", "imgs/percent.png")}

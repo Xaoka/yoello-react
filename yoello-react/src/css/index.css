@@ -40,15 +40,19 @@ ol, ul
     padding-top: 15px;
 }
 
+.flex-fill
+{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+}
+
 /*
 * Bar at the top of the app for navigating the store
 */
 .nav-bar
 {
-    display: flex;
-    flex-wrap: nowrap;
     background-color: var(--ui-grey);
-    justify-content: space-evenly;
 }
 .nav-bar>button
 {

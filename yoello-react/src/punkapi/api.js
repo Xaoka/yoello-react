@@ -33,7 +33,7 @@ export async function initRequest()
     return {
         cart:
         {
-            maxUnits: 50
+            maxUnits: 10
         }
     }
 }
