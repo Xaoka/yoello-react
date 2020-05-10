@@ -37,3 +37,16 @@
     position: inherit;
     margin: 30px 0px;
 }
+
+.close-button
+{
+    background-color: red;
+    border-radius: 12px;
+    font-weight: bolder;
+}
+#preview-close
+{
+    position: inherit;
+    top: -2.5em;
+    padding: 7px;
+}

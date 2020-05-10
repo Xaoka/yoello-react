@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/index.css';
 import punkApiRequest from './punkapi/api.js';
+import truncate from './utils/text.js';
 
 /**
  * A store item component handles a single item (e.g. a beer)
@@ -10,8 +11,6 @@ class StoreItem extends React.Component
 {
     render()
     {
-        const rawName = this.props.value.name;
-        const name = rawName.length > 10 ? `${rawName.substring(0, 15)}...` : rawName;
         return (
         <button className="storeItem"
             style =
@@ -33,7 +32,7 @@ class StoreItem extends React.Component
                 }
                 ></div>
             </div>
-            {name}<br/>
+            {truncate(this.props.value.name, 20)}<br/>
             (ABV{this.props.value.abv})
         </button>
         );
@@ -332,6 +331,10 @@ class StoreItem extends React.Component
         if (!item) { return null; }
         return (
             <div className="float-window">
+                <div className="close-button" id="preview-close"
+                onClick={() => this.props.onClick(null)}>
+                    CLOSE
+                </div>
                 <div className="content">
                     <img className="item-image"
                     style=
@@ -344,8 +347,8 @@ class StoreItem extends React.Component
                         <div className="cart-text">
                             <div style={{fontStyle: "italic"}}>{item.tagline}</div>
                             <div>{`ABV: ${item.abv}`}</div>
-                            <div>{this.truncate(item.description, 80)}</div>
-                            <div>{this.truncate(`Pairs well with; ${item.food_pairing.join(", ")}`, 80)}</div>
+                            <div>{truncate(item.description, 80)}</div>
+                            <div>{truncate(`Pairs well with; ${item.food_pairing.join(", ")}`, 80)}</div>
                         </div>
                     </span>
                 </div>
@@ -355,19 +358,6 @@ class StoreItem extends React.Component
                 </div>
             </div>
         );
-    }
-
-    // TODO: Utility
-    truncate(str, len)
-    {
-        if (str.length > len)
-        {
-            return `${str.substring(0, len)}...`;
-        }
-        else
-        {
-            return str;
-        }
     }
   }
 
