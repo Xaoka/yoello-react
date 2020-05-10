@@ -1,0 +1,37 @@
+.sub-heading
+{
+    font-weight: bolder;
+    color: var(--dark-navy);
+    padding: 3px;
+}
+
+.summary-text, .summary-bold-text
+{
+    color: gray;
+    font-size: 14px;
+    padding: 3px;
+}
+
+.summary-bold-text
+{
+    font-weight: bolder;
+    color: white;
+}
+
+.title-text
+{
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.sub-title
+{
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 34px;
+    padding: 5px;
+    text-align: center;
+    line-height: 2em;
+}

@@ -1,10 +1,13 @@
 @import "cart.css";
+@import "catalog.css";
 @import "preview.css";
+@import "fonts.css";
 
 :root
 {
-    --dark-navy: rgb(13, 13, 16);
+    --dark-navy: rgb(33, 33, 41);
     --ui-grey: rgb(40, 40, 45);
+    --yoello-yellow: rgb(255, 174, 0);
 }
 
 body
@@ -14,20 +17,6 @@ body
     background-color: white;
     overflow: hidden;
     height: 100%;
-}
-
-.cart-text
-{
-    color: gray;
-    font-size: 14px;
-}
-
-.title-text
-{
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    padding-bottom: 10px;
 }
 
 ol, ul
@@ -52,53 +41,6 @@ ol, ul
 }
 
 /*
-* Single item in the store, it's image and title
-*/
-.storeItem
-{
-    border: 0px;
-    float: left;
-    font-size: 10px;
-    font-weight: bold;
-    line-height: 34px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 5px;
-    text-align: center;
-    width: 33%;
-    height: 33%;
-    background-color: white;
-    line-height: 2em;
-}
-
-.storeItem>div
-{
-    width: calc(100% - 0.5em);
-    border: 1px solid #999;
-    border-radius: 8px;
-    height: 120px;
-    padding: 10px;
-    box-sizing: border-box;
-}
-.storeItem>div>div
-{
-    width: 100%;
-    height: 100%;
-}
-
-.storeItem:focus
-{
-    outline: none;
-}
-
-.store
-{
-    /* display: flex;
-    flex-direction: row; */
-    width: 100%;
-}
-
-/*
 * Bar at the top of the app for navigating the store
 */
 .nav-bar
@@ -106,7 +48,7 @@ ol, ul
     display: flex;
     flex-wrap: nowrap;
     background-color: var(--ui-grey);
-    justify-content: center;
+    justify-content: space-evenly;
 }
 .nav-bar>button
 {
@@ -127,16 +69,6 @@ ol, ul
     border-right: 0;
 }
 
-/*
-* Grid of store items available
-*/
-.catalog
-{
-    width: 100%;
-    height: calc(100%);
-    overflow: scroll;
-}
-
 .item-image
 {
     background-size: contain;
@@ -145,4 +77,15 @@ ol, ul
     width: 100px;
     height: 100px;
     border-radius: 10px;
+}
+
+.topic-image
+{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 60px;
+    height: 60px;
+    border: 0px;
+    margin: 0px 20px;
 }

@@ -6,7 +6,7 @@ const options = require("./config.json");
  * @param {(data) => void} callback
  * Makes an asynchronus api call to the backend
  */
-export default async function punkApiRequest(callback)
+export async function punkApiRequest(callback)
 {
     const req = https.request(options, result => {
         // console.log(`statusCode: ${res.statusCode}`)
@@ -25,4 +25,15 @@ export default async function punkApiRequest(callback)
     })
     
     req.end()
+}
+
+/** Dummy function to mock up getting initial store config */
+export async function initRequest()
+{
+    return {
+        cart:
+        {
+            maxUnits: 50
+        }
+    }
 }

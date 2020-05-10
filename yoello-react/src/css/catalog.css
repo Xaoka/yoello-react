@@ -1,0 +1,51 @@
+/*
+* Grid of store items available
+*/
+.catalog
+{
+    width: 100%;
+    height: calc(100%);
+    overflow: scroll;
+}
+
+/*
+* Single item in the store, it's image and title
+*/
+.store-item
+{
+    border: 0px;
+    float: left;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 5px;
+    width: 33%;
+    height: 33%;
+    background-color: white;
+}
+
+.store-item>div
+{
+    width: calc(100% - 1.5em);
+    border: 1px solid #999;
+    border-radius: 8px;
+    height: 115px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.store-item>div>.item-image
+{
+    width: 100%;
+    height: 100%;
+}
+
+.store-item:focus
+{
+    outline: none;
+}
+
+.store
+{
+    /* display: flex;
+    flex-direction: row; */
+    width: 100%;
+}

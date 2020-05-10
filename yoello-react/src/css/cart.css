@@ -60,10 +60,9 @@
     /** Do nicer */
     position: relative;
     left: -20px;
-    background-color: rgba(255, 210, 0, 0.8);
+    background-color: var(--yoello-yellow);
     border-radius: 5px;
     display: initial;
-    padding: 3px;
 }
 
 #item-cost>img
@@ -98,8 +97,11 @@
 .delete-button
 {
     background-image: url("../imgs/delete.png");
-    width: 30px;
-    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 25px;
+    height: 25px;
     border-width: 0px;
     background-color: transparent;
     right: 0px;
@@ -107,8 +109,8 @@
 }
 .button-group>button
 {
-    border: yellow;
-    background-color: yellow;
+    border: var(--yoello-yellow);
+    background-color: var(--yoello-yellow);
     color: var(--dark-navy);
     font-weight: bolder;
     font-size: 15px;
@@ -118,12 +120,15 @@
     border-style: solid;
     padding: 2px 0.25em;
     margin: 0px 1px;
+    border-style: solid;
 }
 .button-group>button:disabled
 {
-    border: lightgray;
-    color: white;
-    color: darkgray;
+    border: rgb(51, 50, 53);
+    color: grey;
+    border-style: solid;
+    border-width: 1px;
+    background-color: var(--dark-navy);
 }
 .button-group>button:first-of-type
 {
@@ -158,9 +163,4 @@
 .ui-group
 {
     padding-bottom: 30px;
-}
-
-.ui-group>div
-{
-    padding: 3px;
 }
