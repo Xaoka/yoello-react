@@ -27,9 +27,10 @@ import React from 'react';
   
     render()
     {
+      //
       return (
-        <div>
-          <div className="store-view">
+          <div className="store-view"
+          style={{filter: `blur(${this.props.shouldBlur ? 6 : 0}px)`}}>
                 {this.renderStoreItem(0)}
                 {this.renderStoreItem(1)}
                 {this.renderStoreItem(2)}
@@ -40,7 +41,6 @@ import React from 'react';
                 {this.renderStoreItem(7)}
                 {this.renderStoreItem(8)}
           </div>
-        </div>
       );
     }
   }

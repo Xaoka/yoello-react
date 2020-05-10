@@ -36,7 +36,7 @@ export default class CartItem extends React.Component
                     <span  className="summary-text">{this.props.amount}</span>
                     {this.renderAmountButton((v) => v + 1, this.props.config.cart.maxUnits, '+')}
                 </span>
-                <div id="description" className="summary-text">{this.props.item.tagline} ABV {this.props.item.abv}</div>
+                <div id="description" className="summary-text">{this.props.item.tagline}</div>
                 </span>
                 
             </div>

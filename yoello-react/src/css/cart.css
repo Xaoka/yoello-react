@@ -97,11 +97,16 @@
 #purchase-panel>div>div>span
 {
     vertical-align: top;
+    display: inline-block;
 }
 
 #purchase-panel>div>div>span>.button-group
 {
     float: right;
+}
+#purchase-panel>div>div>span>.button-group>button
+{
+    margin: 0px 20px;
 }
 
 #item-details>#beer-name
@@ -117,7 +122,7 @@
 
 .amount-button
 {
-    width: 1.5em;
+    width: 2em;
 }
 .delete-button
 {
@@ -139,13 +144,15 @@
     color: var(--dark-navy);
     font-weight: bolder;
     font-size: 15px;
-    /* width: 40px; */
     height: 25px;
     border-width: 1px;
     border-style: solid;
-    /* padding: 2px 0.25em; */
     margin: 0px 1px;
     border-style: solid;
+}
+.button-group>button:not(.amount-button)
+{
+    height: 50px;
 }
 .button-group>button:disabled
 {
@@ -157,20 +164,19 @@
 }
 .button-group>button:first-of-type
 {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 .button-group>button:last-of-type
 {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 #description
 {
     font-size: 11px;
-    /* padding-top: 15px; */
-    display: inline-block;
+    padding-top: 15px;
     color: gray;
 }
 

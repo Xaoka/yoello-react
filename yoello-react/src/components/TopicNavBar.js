@@ -33,7 +33,8 @@ export default class TopicNavBar extends React.Component
   {
       // TODO: Fix code reuse
       return (
-          <div className="nav-bar flex-fill">
+          <div className="nav-bar flex-fill"
+              style={{filter: `blur(${this.props.shouldBlur ? 6 : 0}px)`}}>
               {this.renderImage("COFFEE", "imgs/coffee.jpg")}
               {this.renderImage("CUTLERY", "imgs/cutlery.png")}
               {this.renderImage("PERCENT", "imgs/percent.png")}

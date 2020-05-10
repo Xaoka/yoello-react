@@ -1,5 +1,4 @@
 import React from 'react';
-import clamp from '../utils/math';
 import CartItem from './CartItem';
 import { formatAsCurrency } from '../utils/text';
   /**
@@ -100,7 +99,7 @@ import { formatAsCurrency } from '../utils/text';
         }
         else
         {
-            return (<span className="centre-text summary-text">Nothing in cart, go on, treat yourself!</span>)
+            return (<span className="centre-text summary-text">Nothing in here yet!</span>)
         }
     }
   
@@ -139,7 +138,7 @@ import { formatAsCurrency } from '../utils/text';
                     onClick={() => this.toggleOpen()}
                 >
                     <img/>
-                    <div>Shopping Cart</div>
+                    <div className="description-text">Shopping Cart</div>
                 </div>
                 <div className="cart-body">
                     <div id="purchase-panel">
@@ -162,7 +161,7 @@ import { formatAsCurrency } from '../utils/text';
                             </div>
                             <div className="summary-bold-text">Total<span className="summary-bold-text">{formatAsCurrency(total)}</span></div>
                             <div className="button-group">
-                                <button className="summary-text">Confirm Payment</button>
+                                <button className="summary-text big-button">Confirm Payment</button>
                             </div>
                         </div>
                     </div>

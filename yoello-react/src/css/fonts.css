@@ -41,3 +41,8 @@
     text-align: center;
     line-height: 2em;
 }
+
+.description-text
+{
+    color: rgb(156, 156, 156);
+}

@@ -9,6 +9,7 @@
     right: 5%;
     left: 5%;
     background-color: var(--ui-grey);
+    box-shadow: 10px 10px 20px
 }
 
 .float-window>.content

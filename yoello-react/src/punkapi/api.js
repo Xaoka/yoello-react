@@ -8,21 +8,25 @@ const options = require("./config.json");
  */
 export async function punkApiRequest(callback)
 {
+    let responseData = "";
     const req = https.request(options, result => {
         // console.log(`statusCode: ${res.statusCode}`)
       
         result.on('data', data =>
         {
           console.log(`${data}`);
-        //   responseData += data;
-            callback(JSON.parse(data));
+          responseData += data;
         })
-    })
+        result.on('end', result => {
+            callback(JSON.parse(responseData))
+        });
+    });
+
     
     req.on('error', error => {
         // console.error(error)
         throw Error(`An error occured while communicating with PunkAPI:\n${error}`);
-    })
+    });
     
     req.end()
 }

@@ -86,16 +86,20 @@ import { punkApiRequest, initRequest } from '../punkapi/api.js';
 
     render()
     {
+        const blurInterface = this.state.previewItem !== null;
         return (
         <div className="store">
             <div className="store-title">Demo App</div>
-            <TopicNavBar/>
+            <TopicNavBar
+                shouldBlur={blurInterface}/>
             <CatagoryNavBar
+                shouldBlur={blurInterface}
                 onClick={(i) => this.handleCatagorySelected(i)}
                 catagory={this.state.catagory}/>
 
             <div className="catalog">
                 <Catalog
+                shouldBlur={blurInterface}
                 storeEntries={this.state.storeEntries}
                 onClick={(i) => this.handleItemSelected(i)}
                 />

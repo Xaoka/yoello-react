@@ -25,10 +25,12 @@ import truncate from '../utils/text'
                     <span>
                         <div className="title-text">{item.name}</div>
                         <div className="cart-text">
-                            <div style={{fontStyle: "italic"}}>{item.tagline}</div>
-                            <div>{`ABV: ${item.abv}`}</div>
-                            <div>{truncate(item.description, 80)}</div>
-                            <div>{truncate(`Pairs well with; ${item.food_pairing.join(", ")}`, 80)}</div>
+                            <div className="description-text" style={{fontStyle: "italic"}}>{item.tagline}</div>
+                            <div className="description-text">
+                                {`ABV: ${item.abv}`}<br></br>
+                                {truncate(item.description, 30)}<br></br>
+                                {truncate(`Pairs well with; ${item.food_pairing.join(", ")}`, 30)}
+                            </div>
                         </div>
                     </span>
                 </div>

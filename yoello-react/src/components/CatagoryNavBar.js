@@ -29,7 +29,8 @@ export default class CatagoryNavBar extends React.Component
   render()
   {
       return (
-          <div className="nav-bar flex-fill">
+          <div className="nav-bar flex-fill"
+                style={{filter: `blur(${this.props.shouldBlur ? 6 : 0}px)`}}>
               {this.renderButton("ALL")}
               {this.renderButton("PIZZA")}
               {this.renderButton("STEAK")}
