@@ -1,5 +1,9 @@
 
 import React from 'react';
+import coffeeImage from '../imgs/coffee.png'
+import cutleryImage from '../imgs/cutlery.png'
+import percentImage from '../imgs/percent.png'
+import searchImage from '../imgs/search.png'
   /**
  * Component for a navigation top bar
  */
@@ -18,14 +22,7 @@ export default class TopicNavBar extends React.Component
   {
     return (
         <img className="topic-image"
-        //   onClick={() => this.props.onClick(`ALL`)}
-        style =
-        {
-            {
-                //color: this.props.catagory === "ALL" ? "white" : "lightgrey",
-                backgroundImage: `url("${img_url}")`
-            }
-        }></img>
+        src={img_url}></img>
     );
   }
 
@@ -35,10 +32,10 @@ export default class TopicNavBar extends React.Component
       return (
           <div className="nav-bar flex-fill"
               style={{filter: `blur(${this.props.shouldBlur ? 6 : 0}px)`}}>
-              {this.renderImage("COFFEE", "imgs/coffee.jpg")}
-              {this.renderImage("CUTLERY", "imgs/cutlery.png")}
-              {this.renderImage("PERCENT", "imgs/percent.png")}
-              {this.renderImage("SEARCH", "imgs/search.png")}
+              {this.renderImage("COFFEE", coffeeImage)}
+              {this.renderImage("CUTLERY", cutleryImage)}
+              {this.renderImage("PERCENT", percentImage)}
+              {this.renderImage("SEARCH", searchImage)}
           </div>
       );
   }

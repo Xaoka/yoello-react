@@ -76,7 +76,13 @@ import { formatAsCurrency } from '../utils/text';
     {
         return (
             <button
-                onClick={() => this.handleTipStyleChange(style)}>{text}</button>
+                onClick={() => this.handleTipStyleChange(style)}
+                // :(
+                style=
+                {{
+                    padding: "0px 13px"
+                }}    
+            >{text}</button>
         )
     }
 

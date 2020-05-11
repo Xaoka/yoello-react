@@ -6,7 +6,7 @@
 :root
 {
     --dark-navy: rgb(33, 33, 41);
-    --ui-grey: rgb(40, 40, 45);
+    --ui-grey: rgb(51, 51, 56);
     --yoello-yellow: rgb(255, 174, 0);
 }
 
@@ -74,11 +74,17 @@ ol, ul
     border-right: 0;
 }
 
-.item-image
+.item-image, .topic-image
 {
-    background-size: contain;
+    object-fit: contain;
     background-repeat: no-repeat;
     background-position: center;
+    padding: 7px;
+    box-sizing: border-box;
+}
+
+.item-image
+{
     width: 100px;
     height: 100px;
     border-radius: 10px;
@@ -86,13 +92,8 @@ ol, ul
 
 .topic-image
 {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
     width: 60px;
     height: 60px;
-    border: 0px;
-    margin: 0px 20px;
 }
 
 .big-button

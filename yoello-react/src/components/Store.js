@@ -6,6 +6,7 @@ import ItemPreview from './ItemPreview.js';
 import Cart from './Cart.js';
 import clamp from '../utils/math.js';
 import { punkApiRequest, initRequest } from '../punkapi/api.js';
+import '../utils/swipe'
   
   /**
    * A Store holds ALL items from a particular vendor and holds the sub-components such as navigation bar and catalog
@@ -23,18 +24,21 @@ import { punkApiRequest, initRequest } from '../punkapi/api.js';
         this.filters =
         {
             "ALL": () => true,
-            "STEAK": (entry) => entry.id <= 4,
-            "PIZZA": (entry) => entry.id % 2 === 0
+            "PIZZA": (entry) => entry.id % 2 === 0,
+            "STEAK": (entry) => entry.id <= 4
         };
         this.state =
         {
-          storeEntries: Array(9).fill(null),
-          navFilter: this.filters[0],
-          catagory: "",
-          previewItem: null,
-          cart: {}
+            storeEntries: Array(9).fill(null),
+            navFilter: this.filters[0],
+            catagory: "",
+            previewItem: null,
+            cart: {},
+            itemsPerPage: 9,
+            page: 1
         };
-        punkApiRequest((data) =>
+        document.addEventListener('swipe', (evt) => this.handleSwipeEvent(evt));
+        punkApiRequest({ page: this.state.page, perPage: this.state.itemsPerPage}, (data) =>
         {
             // const beers = data.map((beer) => beer.name);
             // console.log(beers);
@@ -56,6 +60,28 @@ import { punkApiRequest, initRequest } from '../punkapi/api.js';
     handleItemSelected(itemIndex)
     {
         this.setState({...this.state, previewItem: this.catalogData[itemIndex]});
+    }
+
+    handleSwipeEvent(evt)
+    {
+        const keys = Object.keys(this.filters);
+        let desiredIndex = keys.indexOf(this.state.catagory);
+        switch (evt.detail.direction)
+        {
+            case 'left':
+                desiredIndex = clamp(desiredIndex + 1, 0, keys.length - 1);
+                break;
+            case 'right':
+                desiredIndex = clamp(desiredIndex - 1, 0, keys.length - 1);
+                break;
+        }
+        this.handleCatagorySelected(keys[desiredIndex]);
+    }
+
+    handleCatalogPageChange(page)
+    {
+        page = clamp(page, 1, Math.ceil(this.catalogData.length / this.state.itemsPerPage));
+        this.setState({...this.state, page});
     }
 
     /**
@@ -102,6 +128,9 @@ import { punkApiRequest, initRequest } from '../punkapi/api.js';
                 shouldBlur={blurInterface}
                 storeEntries={this.state.storeEntries}
                 onClick={(i) => this.handleItemSelected(i)}
+                pageChange={(page) => this.handleCatalogPageChange(page)}
+                page={this.state.page}
+                itemsPerPage={this.state.itemsPerPage}
                 />
             </div>
             <Cart

@@ -5,11 +5,24 @@ import React from 'react';
    */
   export default class Catalog extends React.Component
   {
-    handleClick(i)
+    constructor(props)
     {
-        const storeEntries = this.state.storeEntries.slice();
-        storeEntries[i] = this.state.storeEntries[i];
-        this.setState({storeEntries: storeEntries});
+      super(props);
+      
+      document.addEventListener('swipe', (evt) => this.handleSwipeEvent(evt));
+    }
+
+    handleSwipeEvent(evt)
+    {
+      switch (evt.detail.direction)
+      {
+        case 'up':
+          this.props.pageChange(this.props.page + 1)
+          break;
+        case 'down':
+          this.props.pageChange(this.props.page - 1)
+          break;
+      }
     }
 
     /**
@@ -24,6 +37,18 @@ import React from 'react';
         onClick={() => this.props.onClick(itemIndex)}
         />;
     }
+
+    renderStoreItems()
+    {
+        const items = [];
+        const start = (this.props.page - 1) * this.props.itemsPerPage;
+        const end = start + this.props.itemsPerPage;
+        for (let i = start; i < end; i++)
+        {
+            items.push(this.renderStoreItem(i))
+        }
+        return items;
+    }
   
     render()
     {
@@ -31,15 +56,7 @@ import React from 'react';
       return (
           <div className="store-view"
           style={{filter: `blur(${this.props.shouldBlur ? 6 : 0}px)`}}>
-                {this.renderStoreItem(0)}
-                {this.renderStoreItem(1)}
-                {this.renderStoreItem(2)}
-                {this.renderStoreItem(3)}
-                {this.renderStoreItem(4)}
-                {this.renderStoreItem(5)}
-                {this.renderStoreItem(6)}
-                {this.renderStoreItem(7)}
-                {this.renderStoreItem(8)}
+                {this.renderStoreItems()}
           </div>
       );
     }

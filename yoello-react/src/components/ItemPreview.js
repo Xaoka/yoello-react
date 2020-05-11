@@ -17,9 +17,10 @@ import truncate from '../utils/text'
                 </div>
                 <div className="content">
                     <img className="item-image"
+                    src={item.image_url}
                     style=
                     {{
-                        backgroundImage: `url("${item.image_url}")`
+                        backgroundColor: "white"
                     }}
                     />
                     <span>

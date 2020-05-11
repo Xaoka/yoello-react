@@ -6,10 +6,15 @@ const options = require("./config.json");
  * @param {(data) => void} callback
  * Makes an asynchronus api call to the backend
  */
-export async function punkApiRequest(callback)
+export async function punkApiRequest(requestOptions, callback)
 {
     let responseData = "";
-    const req = https.request(options, result => {
+    const queryOptions =
+    {
+        ...options,
+        path: `/v2/beers`,//?page=${requestOptions.page}&per_page=${requestOptions.perPage}`,
+    }
+    const req = https.request(queryOptions, result => {
         // console.log(`statusCode: ${res.statusCode}`)
       
         result.on('data', data =>

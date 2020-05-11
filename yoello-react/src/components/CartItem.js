@@ -17,15 +17,10 @@ export default class CartItem extends React.Component
             <div className="margin-overflow">
                 <div id="item-cost">
                     <img className="item-image"
-                        style=
-                        {
-                            {
-                                backgroundImage: `url("${this.props.item.image_url}")`
-                            }
-                        }
+                        src={this.props.item.image_url}
                     >
                     </img>
-                    <div className="sub-heading">£{(this.props.item.price / 100).toFixed(2)}</div>
+                    <div className="sub-heading item-price">£{(this.props.item.price / 100).toFixed(2)}</div>
                 </div>
                 <button className="delete-button"
                 onClick={this.props.clearItem}></button>

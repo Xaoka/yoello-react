@@ -18,14 +18,9 @@ export default class StoreItem extends React.Component
             }
             onClick={() => this.props.onClick()} >
             <div>
-                <div className="item-image"
-                style=
-                {
-                    {
-                        backgroundImage: `url("${this.props.value.image_url}")`
-                    }
-                }
-                ></div>
+                <img className="item-image"
+                src={this.props.value.image_url}
+                ></img>
             </div>
             {truncate(this.props.value.name, 20)}<br/>
             (ABV {this.props.value.abv})
