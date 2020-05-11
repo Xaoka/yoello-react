@@ -1,3 +1,7 @@
+# Yoello Beer App
+
+This repo contains a ReactJS example application for a fake beer purchasing app.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
