@@ -1,7 +1,7 @@
 import React from 'react';
-import TopicNavBar from './TopicNavBar.js';
+import ImageNavBar from './TopicNavBar.js';
 import Catalog from './Catalog.js';
-import CatagoryNavBar from './CatagoryNavBar.js';
+import TextNavBar from './CatagoryNavBar.js';
 import ItemPreview from './ItemPreview.js';
 import Cart from './Cart.js';
 import clamp from '../utils/math.js';
@@ -153,13 +153,14 @@ import '../utils/swipe'
 
     render()
     {
+        // TODO: Move nav bar catagories into a settings file
         const blurInterface = this.state.previewItem.item !== null;
         return (
         <div className="store">
             <div className="store-title">Demo App</div>
-            <TopicNavBar
+            <ImageNavBar
                 shouldBlur={blurInterface}/>
-            <CatagoryNavBar
+            <TextNavBar
                 shouldBlur={blurInterface}
                 onClick={(i) => this.handleCatagorySelected(i)}
                 catagory={this.state.catagory}/>
