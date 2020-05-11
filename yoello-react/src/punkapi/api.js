@@ -19,7 +19,7 @@ export async function punkApiRequest(requestOptions, callback)
       
         result.on('data', data =>
         {
-          console.log(`${data}`);
+        //   console.log(`${data}`);
           responseData += data;
         })
         result.on('end', result => {

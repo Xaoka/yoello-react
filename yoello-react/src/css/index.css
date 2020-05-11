@@ -2,6 +2,7 @@
 @import "catalog.css";
 @import "preview.css";
 @import "fonts.css";
+@import "search.css";
 
 :root
 {
@@ -52,6 +53,10 @@ ol, ul
 /*
 * Bar at the top of the app for navigating the store
 */
+.store-title + .nav-bar
+{
+    background-color: red;
+}
 .nav-bar
 {
     background-color: var(--ui-grey);
@@ -93,11 +98,15 @@ ol, ul
 
 .topic-image
 {
-    width: 60px;
+    width: 100px;
     height: 60px;
+    padding: 12px;
+    background-color: var(--ui-grey);
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
 }
 
-.big-button
+.big-button, .option-button
 {
     width: 100%;
     font-size: 20px !important;

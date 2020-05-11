@@ -76,6 +76,7 @@ import { formatAsCurrency } from '../utils/text';
                     item={item.item}
                     amount={item.amount}
                     setAmount={(item, amount) => this.props.updateCartEntry(item, amount)}
+                    clearItem={(item) => this.props.clearItem(item)}
                     config={this.props.storeConfig}/>)
             }
             return itemsJSX;

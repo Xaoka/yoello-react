@@ -1,12 +1,17 @@
 import React from 'react';
-import ImageNavBar from './TopicNavBar.js';
+import ImageNavBar from './ImageNavBar.js';
 import Catalog from './Catalog.js';
-import TextNavBar from './CatagoryNavBar.js';
+import TextNavBar from './TextNavBar.js';
 import ItemPreview from './ItemPreview.js';
 import Cart from './Cart.js';
 import clamp from '../utils/math.js';
 import { punkApiRequest, initRequest } from '../punkapi/api.js';
 import '../utils/swipe'
+import coffeeImage from '../imgs/coffee.png'
+import cutleryImage from '../imgs/cutlery.png'
+import percentImage from '../imgs/percent.png'
+import searchImage from '../imgs/search.png'
+import SearchPage from './SearchPage'
   
   /**
    * A Store holds ALL items from a particular vendor and holds the sub-components such as navigation bar and catalog
@@ -21,23 +26,69 @@ import '../utils/swipe'
         {
             this.storeConfig = config;
         });
-        this.filters =
-        {
-            "ALL": () => true,
-            "PIZZA": (entry) => entry.id % 2 === 0,
-            "STEAK": (entry) => entry.id <= 4
-        };
         this.userStates =
         {
             STORE: "STORE",
             NEW_ITEM: "NEW_ITEM",
             CART: "CART"
         }
+        this.uiEnabled = true;
+        this.topics =
+        [
+            {
+                name: "DRINKS",
+                catagories:
+                [
+                    {
+                        filterFunc: () => true,
+                        name: "ALL"
+                    },
+                    {
+                        filterFunc: (entry) => entry.id % 2 === 0,
+                        name: "PIZZA"
+                    },
+                    {
+                        filterFunc: (entry) => entry.id % 2 === 1,
+                        name: "STEAK"
+                    }
+                ]
+            },
+            {
+                name: "FOOD",
+                catagories:
+                [
+                    {
+                        filterFunc: () => true,
+                        name: "All Food"
+                    }
+                ]
+            },
+            {
+                name: "SALES",
+                catagories:
+                [
+                    {
+                        filterFunc: () => true,
+                        name: "Sales"
+                    }
+                ]
+            },
+            {
+                name: "SEARCH",
+                catagories:
+                [
+                    {
+                        filterFunc: () => true,
+                        name: "Search"
+                    }
+                ]
+            }
+        ];
         this.state =
         {
             storeEntries: Array(9).fill(null),
-            navFilter: this.filters[0],
-            catagory: "",
+            catagoryIndex: 0,
+            topicIndex: 0,
             previewItem:
             {
                 item: null,
@@ -46,7 +97,9 @@ import '../utils/swipe'
             cart: {},
             itemsPerPage: 9,
             page: 1,
-            userFlowState: this.userStates.STORE
+            maxPages: 0,
+            userFlowState: this.userStates.STORE,
+            searchOption: 0
         };
         document.addEventListener('swipe', (evt) => this.handleSwipeEvent(evt));
         punkApiRequest({ page: this.state.page, perPage: this.state.itemsPerPage}, (data) =>
@@ -59,8 +112,9 @@ import '../utils/swipe'
                     // Dummy price out as double abv, in pennies
                     price: entry.abv * 2 * 100
                 }});
+            this.setState({...this.state, maxPages: Math.ceil(this.catalogData.length / this.state.itemsPerPage)});
             // this.setState({ storeEntries: data });
-            this.handleCatagorySelected(`ALL`);
+            this.handleCatagorySelected(0);
         })
     }
 
@@ -70,6 +124,7 @@ import '../utils/swipe'
      */
     handleItemSelected(itemIndex)
     {
+        if (this.state.userFlowState === this.userStates.CART) { return; }
         const item = this.catalogData[itemIndex];
         const isNew = (!this.state.cart[item.name]);
         this.setState({...this.state, previewItem: { item, isNew } });
@@ -77,36 +132,66 @@ import '../utils/swipe'
 
     handleSwipeEvent(evt)
     {
-        const keys = Object.keys(this.filters);
-        let desiredIndex = keys.indexOf(this.state.catagory);
+        if (!this.uiEnabled) { return; }
+        let catagoryIndex = this.state.catagoryIndex;
+        const catagories = this.topics[this.state.topicIndex].catagories;
+        let offset = 0;
         switch (evt.detail.direction)
         {
             case 'left':
-                desiredIndex = clamp(desiredIndex + 1, 0, keys.length - 1);
+                offset = 1;
                 break;
             case 'right':
-                desiredIndex = clamp(desiredIndex - 1, 0, keys.length - 1);
+                offset = -1;
                 break;
         }
-        this.handleCatagorySelected(keys[desiredIndex]);
+        if (catagoryIndex === catagories.length - 1)
+        {
+            const topicIndex = clamp(this.state.topicIndex + offset, 0, this.topics.length - 1);
+            catagoryIndex = 0;
+            this.handleTopicChanged(topicIndex);
+        }
+        else
+        {
+            catagoryIndex = clamp(catagoryIndex + offset, 0, catagories.length - 1);
+        }
+        this.handleCatagorySelected(catagoryIndex);
+    }
+
+    handleTopicChanged(topicIndex)
+    {
+        console.log(`Topic ${topicIndex}`)
+        if (topicIndex === this.state.topicIndex) { return }
+        this.setState({...this.state, topicIndex, catagoryIndex: 0, page: 1})
     }
 
     handleCatalogPageChange(page)
     {
-        page = clamp(page, 1, Math.ceil(this.catalogData.length / this.state.itemsPerPage));
-        this.setState({...this.state, page});
+        if (!this.uiEnabled) { return; }
+        this.setState({...this.state, page: clamp(page, 1, this.state.maxPages)});
     }
 
     /**
      * Event callback handler when an item catagory is selected
-     * @param {string} catagory 
+     * @param {integer} catagoryIndex
      */
-    handleCatagorySelected(catagory)
+    handleCatagorySelected(catagoryIndex)
     {
-        console.log(`${catagory} selected from "${Object.keys(this.filters)}"`)
-        const entries = this.catalogData.map((entry) => {return {...entry, visible: this.filters[catagory](entry)}});
-        // console.log(`Found ${entries.length} entries:\n${JSON.stringify(entries)}`)
-        this.setState({ ...this.state, storeEntries: entries, catagory})
+        console.log(`catagory ${catagoryIndex}`)
+        if (!this.uiEnabled) { return; }
+        if (!this.topics[this.state.topicIndex].catagories[catagoryIndex])
+        {
+            throw Error(`Tried to set invalid catagory '${catagoryIndex}`);
+        }
+        let page = this.state.page;
+        if (catagoryIndex !== this.state.catagoryIndex)
+        {
+            page = 1;
+        }
+        // const entries = this.catalogData.map((entry) => {return {...entry, visible: this.topics[this.state.topicIndex].catagories[catagoryIndex].filterFunc(entry)}});
+        // TODO: Change max pages here
+        this.onSearchOptionChanged(0);
+        this.setState({ ...this.state, catagoryIndex, page})
     }
 
     addItemToCart(item)
@@ -142,6 +227,13 @@ import '../utils/swipe'
         this.setState({...this.state, previewItem: { item: null, isNew: false }, cart: newCart, userFlowState})
     }
 
+    removeItemFromCart(item)
+    {
+        const newCart = {...this.state.cart};
+        delete(newCart[item.name]);
+        this.setState({...this.state, cart: newCart});
+    }
+
     setUserFlowState(state)
     {
         if (!this.userStates[state])
@@ -151,34 +243,115 @@ import '../utils/swipe'
         this.setState({...this.state, userFlowState: state});
     }
 
+    renderPlaceholder(text, key)
+    {
+        return (<div className="centre-text centre-page-text" key={key}
+        >{text}</div>)
+    }
+
+    onSearchOptionChanged(index)
+    {
+        let sortFunc;
+        switch (index)
+        {
+            case 0:
+                sortFunc = (i1, i2) => parseFloat(i1.abv) - parseFloat(i2.abv);
+                break;
+            case 1:
+                sortFunc = (i1, i2) => parseFloat(i2.abv) - parseFloat(i1.abv);
+                break;
+            case 2:
+                sortFunc = (i1, i2) => i1.name.toLowerCase().localeCompare(i2.name.toLowerCase());
+                break;
+            case 3:
+                sortFunc = (i1, i2) => i2.name.toLowerCase().localeCompare(i1.name.toLowerCase());
+                break;
+            default:
+                sortFunc = (i1, i2) => 0;
+                break;
+        }
+        console.log(`Sorting by ${sortFunc}`)
+        const items = [...this.catalogData].sort(sortFunc);
+        this.setState({...this.state, searchOption: index, storeEntries: items});
+    }
+
+    renderView(shouldBlur)
+    {
+        // TODO: Move these out into render function classes/configs
+        let sections = [];
+        /** Catalog always has to render due to transition, TODO: change this */
+        sections.push(<div className="catalog" key={"catalog"}
+            style=
+            {{
+                display: this.state.topicIndex === 0 ? null : "none"
+            }}>
+            <Catalog
+            shouldBlur={shouldBlur}
+            storeEntries={this.state.storeEntries}
+            handleItemSelected={(i) => this.handleItemSelected(i)}
+            pageChange={(page) => this.handleCatalogPageChange(page)}
+            page={this.state.page}
+            itemsPerPage={this.state.itemsPerPage}
+            maxPages={this.state.maxPages}
+            />
+            </div>);
+        switch (this.state.topicIndex)
+        {
+            case 0:
+                break;
+            case 1:
+                sections.push(this.renderPlaceholder("Tasty food coming soon to Demo App!", "Food"));
+                break;
+            case 2:
+                sections.push(this.renderPlaceholder("No sales on right now, try again later", "Sales"));
+                break;
+            case 3:
+                sections.push(<SearchPage
+                changeSearchOption={(index) => this.onSearchOptionChanged(index)}
+                option={this.state.searchOption}></SearchPage>);
+                break;
+            default:
+                sections.push(this.renderPlaceholder("404 - Uhoh", "404"));
+                break;
+        }
+        return sections;
+    }
+
     render()
     {
+        this.uiEnabled = (this.state.userFlowState !== this.userStates.CART && this.state.previewItem.item == null);
         // TODO: Move nav bar catagories into a settings file
-        const blurInterface = this.state.previewItem.item !== null;
+        const hasPreviewItem = this.state.previewItem.item !== null;
+        const cartOpen = this.state.userFlowState === this.userStates.CART;
+        const blurInterface = hasPreviewItem || cartOpen;
+        if (!this.topics[this.state.topicIndex])
+        {
+            throw Error(`UHOH: ${this.state.topicIndex}\n${JSON.stringify(this.topics[this.state.topicIndex])}`)
+        }
         return (
         <div className="store">
             <div className="store-title">Demo App</div>
             <ImageNavBar
-                shouldBlur={blurInterface}/>
+                shouldBlur={blurInterface}
+                catagory={this.state.topicIndex}
+                onClick={(topic) => this.handleTopicChanged(topic)}
+                catagories={
+                [
+                    { name: "DRINKS", url: coffeeImage },
+                    { name: "FOOD", url: cutleryImage },
+                    { name: "SALES", url: percentImage },
+                    { name: "SEARCH", url: searchImage },
+                ]}/>
             <TextNavBar
                 shouldBlur={blurInterface}
-                onClick={(i) => this.handleCatagorySelected(i)}
-                catagory={this.state.catagory}/>
-
-            <div className="catalog">
-                <Catalog
-                shouldBlur={blurInterface}
-                storeEntries={this.state.storeEntries}
-                onClick={(i) => this.handleItemSelected(i)}
-                pageChange={(page) => this.handleCatalogPageChange(page)}
-                page={this.state.page}
-                itemsPerPage={this.state.itemsPerPage}
-                />
-            </div>
+                onClick={(index) => this.handleCatagorySelected(index)}
+                catagory={this.state.catagoryIndex}
+                catagories={this.topics[this.state.topicIndex].catagories}/>
+            {this.renderView(blurInterface)}
             <Cart
             items={this.state.cart}
             updateCartEntry={(item, amount) => this.updateCartEntry(item, amount)}
-            clearItem={() => null}//this.itemAddedToPreCart(null)}
+            clearItem={(item) => this.removeItemFromCart(item)}
             storeConfig={this.storeConfig}
             userFlowState={this.state.userFlowState}
             setUserFlowState={(state) => this.setUserFlowState(state)}

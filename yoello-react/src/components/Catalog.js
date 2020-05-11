@@ -1,4 +1,4 @@
-import StoreItem from './StoreItem.js';
+import CatalogPage from './CatalogPage.js';
 import React from 'react';
   /**
    * Component for rendering a paginated catalog
@@ -25,38 +25,32 @@ import React from 'react';
       }
     }
 
-    /**
-     * Item in the store to render
-     * @param {integer} itemIndex 
-     */
-    renderStoreItem(itemIndex)
+    renderPages()
     {
-        const entry = this.props.storeEntries[itemIndex];
-        return <StoreItem
-        value={ entry || { name: "Loading", image_url: "imgs/beer.jpg" } }
-        onClick={() => this.props.onClick(itemIndex)}
-        />;
-    }
-
-    renderStoreItems()
-    {
-        const items = [];
-        const start = (this.props.page - 1) * this.props.itemsPerPage;
-        const end = start + this.props.itemsPerPage;
-        for (let i = start; i < end; i++)
+        const pages = []
+        for (let i = 1; i <= this.props.maxPages; i++)
         {
-            items.push(this.renderStoreItem(i))
+            pages.push(<CatalogPage key={i}
+              storeEntries={this.props.storeEntries}
+              onClick={(item) => this.props.handleItemSelected(item)}
+              page={i}
+              itemsPerPage={this.props.itemsPerPage}>
+                </CatalogPage>)
         }
-        return items;
+        return pages;
     }
   
     render()
     {
-      //
+      // TODO: Fix magic number (Height 100% was not behaving)
       return (
           <div className="store-view"
-          style={{filter: `blur(${this.props.shouldBlur ? 6 : 0}px)`}}>
-                {this.renderStoreItems()}
+            style=
+            {{
+              filter: `blur(${this.props.shouldBlur ? 6 : 0}px)`,
+              marginTop: `-${490 * (this.props.page - 1)}px`
+            }}>
+            {this.renderPages()}
           </div>
       );
     }

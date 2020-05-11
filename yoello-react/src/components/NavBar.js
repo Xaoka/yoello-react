@@ -4,26 +4,17 @@ import React from 'react';
  */
 export default class NavBar extends React.Component
 {
-  constructor(props)
+  renderElement(catagory, index)
   {
-        super(props);
-        this.state =
-        {
-            catagories: [{ foo: "item 1"}]
-        };
-  }
-
-  renderElement(catagory)
-  {
-      return ( <div>Nav Bar Item</div> );
+  return ( <div>Nav Bar Item {index}</div> );
   }
 
   renderElements()
   {
       const elements = [];
-      for (const catagory of this.state.catagories)
+      for (let i = 0; i < this.props.catagories.length; i++)
       {
-          elements.push(this.renderElement(catagory));
+          elements.push(this.renderElement(this.props.catagories[i], i));
       }
       return elements;
   }

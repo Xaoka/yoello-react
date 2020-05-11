@@ -26,7 +26,7 @@ export default class CartItem extends React.Component
                     <div className="sub-heading item-price">£{(this.props.item.price / 100).toFixed(2)}</div>
                 </div>
                 <button className="delete-button"
-                onClick={this.props.clearItem}></button>
+                onClick={() => this.props.clearItem(this.props.item)}></button>
                 <span>
                     <span id="beer-name" className="summary-bold-text">{this.props.item.name}</span>
                 <span className="button-group">
