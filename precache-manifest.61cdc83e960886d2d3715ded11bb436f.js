@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "9729c7739c576870bc98b8f6be843c2e",
+    "revision": "be3946ebed8f871358b7d56212ecda34",
     "url": "/yoello-react/index.html"
   },
   {
-    "revision": "d58ffb61698455a04b44",
+    "revision": "a98a74c386cde4afec99",
     "url": "/yoello-react/static/css/main.1609092c.chunk.css"
   },
   {
-    "revision": "c7f20e27c25d279bed7d",
-    "url": "/yoello-react/static/js/2.f82ed12c.chunk.js"
+    "revision": "736e334165c5ef4a5821",
+    "url": "/yoello-react/static/js/2.8896164c.chunk.js"
   },
   {
     "revision": "801455085fc6f57b23eb009849543052",
-    "url": "/yoello-react/static/js/2.f82ed12c.chunk.js.LICENSE.txt"
+    "url": "/yoello-react/static/js/2.8896164c.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "d58ffb61698455a04b44",
-    "url": "/yoello-react/static/js/main.e5d6ca5a.chunk.js"
+    "revision": "a98a74c386cde4afec99",
+    "url": "/yoello-react/static/js/main.05a01ef2.chunk.js"
   },
   {
     "revision": "e4664a4144e495166041",
