@@ -10,6 +10,10 @@ export default class StoreItem extends React.Component
     {
         return (
         <button className="store-item sub-title"
+            style=
+            {{
+                display: this.props.value.visible ? "" : "none"
+            }}
             onClick={() => this.props.onClick()} >
             <div>
                 <img className="item-image"

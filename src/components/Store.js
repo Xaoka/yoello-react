@@ -115,6 +115,7 @@ import SearchPage from './SearchPage'
             this.setState({...this.state, maxPages: Math.ceil(this.catalogData.length / this.state.itemsPerPage)});
             // this.setState({ storeEntries: data });
             this.handleCatagorySelected(0);
+            this.onSearchOptionChanged(0);
         })
     }
 
@@ -136,32 +137,42 @@ import SearchPage from './SearchPage'
         let catagoryIndex = this.state.catagoryIndex;
         const catagories = this.topics[this.state.topicIndex].catagories;
         let offset = 0;
-        switch (evt.detail.direction)
+
+        if (evt.detail.direction === 'left')
         {
-            case 'left':
-                offset = 1;
-                break;
-            case 'right':
-                offset = -1;
-                break;
-        }
-        if (catagoryIndex === catagories.length - 1)
-        {
-            const topicIndex = clamp(this.state.topicIndex + offset, 0, this.topics.length - 1);
-            catagoryIndex = 0;
-            this.handleTopicChanged(topicIndex);
+            offset = 1;
+            if (catagoryIndex === catagories.length - 1)
+            {
+                const topicIndex = clamp(this.state.topicIndex + offset, 0, this.topics.length - 1);
+                catagoryIndex = 0;
+                this.handleTopicChanged(topicIndex);
+            }
+            else
+            {
+                catagoryIndex = clamp(catagoryIndex + offset, 0, catagories.length - 1);
+            }
         }
         else
         {
-            catagoryIndex = clamp(catagoryIndex + offset, 0, catagories.length - 1);
+            offset = -1;
+            if (catagoryIndex == 0)
+            {
+                const topicIndex = clamp(this.state.topicIndex + offset, 0, this.topics.length - 1);
+                catagoryIndex = 0;
+                this.handleTopicChanged(topicIndex);
+            }
+            else
+            {
+                catagoryIndex = clamp(catagoryIndex + offset, 0, catagories.length - 1);
+            }
         }
         this.handleCatagorySelected(catagoryIndex);
     }
 
     handleTopicChanged(topicIndex)
     {
-        console.log(`Topic ${topicIndex}`)
         if (topicIndex === this.state.topicIndex) { return }
+        console.log(`Topic ${topicIndex}`)
         this.setState({...this.state, topicIndex, catagoryIndex: 0, page: 1})
     }
 
@@ -188,10 +199,9 @@ import SearchPage from './SearchPage'
         {
             page = 1;
         }
-        // const entries = this.catalogData.map((entry) => {return {...entry, visible: this.topics[this.state.topicIndex].catagories[catagoryIndex].filterFunc(entry)}});
+        const entries = this.catalogData.map((entry) => {return {...entry, visible: this.topics[this.state.topicIndex].catagories[catagoryIndex].filterFunc(entry)}});
         // TODO: Change max pages here
-        this.onSearchOptionChanged(0);
-        this.setState({ ...this.state, catagoryIndex, page})
+        this.setState({ ...this.state, catagoryIndex, page, storeEntries: entries})
     }
 
     addItemToCart(item)
@@ -271,7 +281,7 @@ import SearchPage from './SearchPage'
                 break;
         }
         console.log(`Sorting by ${sortFunc}`)
-        const items = [...this.catalogData].sort(sortFunc);
+        const items = [...this.state.storeEntries].sort(sortFunc);
         this.setState({...this.state, searchOption: index, storeEntries: items});
     }
 
