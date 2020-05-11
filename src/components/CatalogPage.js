@@ -15,7 +15,7 @@ import React from 'react';
         const entry = this.props.storeEntries[itemIndex];
         return <StoreItem key={itemIndex}
         value={ entry || { name: "Loading", image_url: "imgs/beer.jpg" } }
-        onClick={() => this.props.onClick(itemIndex)}
+        onClick={() => this.props.onClick(entry.id)}
         />;
     }
 

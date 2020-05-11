@@ -21,7 +21,7 @@ export default class StoreItem extends React.Component
                 ></img>
             </div>
             {truncate(this.props.value.name, 20)}<br/>
-            (ABV {this.props.value.abv})
+            (ABV {this.props.value.abv}) ID {this.props.value.id}
         </button>
         );
     }

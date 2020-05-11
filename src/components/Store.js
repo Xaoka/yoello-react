@@ -121,12 +121,13 @@ import SearchPage from './SearchPage'
 
     /**
      * Event handler callback for when an item is initially selected
-     * @param {integer} itemIndex
+     * @param {integer} itemID
      */
-    handleItemSelected(itemIndex)
+    handleItemSelected(itemID)
     {
-        if (this.state.userFlowState === this.userStates.CART) { return; }
-        const item = this.catalogData[itemIndex];
+        if (!this.uiEnabled) { return; }
+        console.log(`Item ${itemID}`);
+        const item = this.catalogData[itemID - 1];
         const isNew = (!this.state.cart[item.name]);
         this.setState({...this.state, previewItem: { item, isNew } });
     }
@@ -155,7 +156,7 @@ import SearchPage from './SearchPage'
         else
         {
             offset = -1;
-            if (catagoryIndex == 0)
+            if (catagoryIndex === 0)
             {
                 const topicIndex = clamp(this.state.topicIndex + offset, 0, this.topics.length - 1);
                 catagoryIndex = 0;
@@ -199,16 +200,23 @@ import SearchPage from './SearchPage'
         {
             page = 1;
         }
-        const entries = this.catalogData.map((entry) => {return {...entry, visible: this.topics[this.state.topicIndex].catagories[catagoryIndex].filterFunc(entry)}});
+        const entries = [...this.catalogData].map((entry) => {return {...entry, visible: this.topics[this.state.topicIndex].catagories[catagoryIndex].filterFunc(entry)}});
         // TODO: Change max pages here
         this.setState({ ...this.state, catagoryIndex, page, storeEntries: entries})
     }
 
     addItemToCart(item)
     {
-        const cartEntry = this.state.cart[item.name];
-        const amount = cartEntry ? cartEntry.amount + 1 : 1;
-        this.updateCartEntry(item, clamp(amount, 0, this.storeConfig.cart.maxUnits));
+        if (item)
+        {
+            const cartEntry = this.state.cart[item.name];
+            const amount = cartEntry ? cartEntry.amount + 1 : 1;
+            this.updateCartEntry(item, clamp(amount, 0, this.storeConfig.cart.maxUnits));
+        }
+        else
+        {
+            this.setState({...this.state, previewItem: { item: null, amount: 0}})
+        }
     }
 
     /**
@@ -316,7 +324,7 @@ import SearchPage from './SearchPage'
                 sections.push(this.renderPlaceholder("No sales on right now, try again later", "Sales"));
                 break;
             case 3:
-                sections.push(<SearchPage
+                sections.push(<SearchPage id={"search_page"}
                 changeSearchOption={(index) => this.onSearchOptionChanged(index)}
                 option={this.state.searchOption}></SearchPage>);
                 break;
