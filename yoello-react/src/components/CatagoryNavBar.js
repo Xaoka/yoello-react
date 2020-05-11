@@ -20,7 +20,7 @@ export default class CatagoryNavBar extends React.Component
           style =
           {
               {
-                  color: this.props.catagory === catagory ? "white" : "lightgrey"
+                  color: this.props.catagory === catagory ? "white" : "var(--ui-light-grey)"
               }
           }>{catagory}</button>
       );

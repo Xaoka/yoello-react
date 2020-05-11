@@ -27,15 +27,26 @@ import '../utils/swipe'
             "PIZZA": (entry) => entry.id % 2 === 0,
             "STEAK": (entry) => entry.id <= 4
         };
+        this.userStates =
+        {
+            STORE: "STORE",
+            NEW_ITEM: "NEW_ITEM",
+            CART: "CART"
+        }
         this.state =
         {
             storeEntries: Array(9).fill(null),
             navFilter: this.filters[0],
             catagory: "",
-            previewItem: null,
+            previewItem:
+            {
+                item: null,
+                isNew: false
+            },
             cart: {},
             itemsPerPage: 9,
-            page: 1
+            page: 1,
+            userFlowState: this.userStates.STORE
         };
         document.addEventListener('swipe', (evt) => this.handleSwipeEvent(evt));
         punkApiRequest({ page: this.state.page, perPage: this.state.itemsPerPage}, (data) =>
@@ -59,7 +70,9 @@ import '../utils/swipe'
      */
     handleItemSelected(itemIndex)
     {
-        this.setState({...this.state, previewItem: this.catalogData[itemIndex]});
+        const item = this.catalogData[itemIndex];
+        const isNew = (!this.state.cart[item.name]);
+        this.setState({...this.state, previewItem: { item, isNew } });
     }
 
     handleSwipeEvent(evt)
@@ -96,23 +109,51 @@ import '../utils/swipe'
         this.setState({ ...this.state, storeEntries: entries, catagory})
     }
 
+    addItemToCart(item)
+    {
+        const cartEntry = this.state.cart[item.name];
+        const amount = cartEntry ? cartEntry.amount + 1 : 1;
+        this.updateCartEntry(item, clamp(amount, 0, this.storeConfig.cart.maxUnits));
+    }
+
     /**
      * Event callback handler when an item is added to pre-cart (Amount selection)
      * @param {Item} item 
      */
     updateCartEntry(item, amount)
     {
-        const itemEntry = this.state.cart[item.name] || { amount: 0, item };
+        let itemEntry;
+        let userFlowState = this.state.userFlowState;
+        if (this.state.cart[item.name])
+        {
+            // TODO: If we have it in cart, change the button text
+            itemEntry = this.state.cart[item.name]
+            userFlowState = this.userStates.CART;
+        }
+        else
+        {
+            userFlowState = this.userStates.NEW_ITEM;
+            itemEntry = { amount: 0, item };
+        }
         itemEntry.amount = clamp(amount, 0, this.storeConfig.cart.maxUnits);
-        const newCart = this.state.cart;
+        const newCart = {...this.state.cart};
         newCart[item.name] = itemEntry;
         // console.log(`Added entry to cart ${JSON.stringify(itemEntry)}`)
-        this.setState({...this.state, previewItem: null, cart: newCart})
+        this.setState({...this.state, previewItem: { item: null, isNew: false }, cart: newCart, userFlowState})
+    }
+
+    setUserFlowState(state)
+    {
+        if (!this.userStates[state])
+        {
+            throw Error(`Invalid user flow state '${state}' set! Valid options are: ${Object.keys(this.userStates).join(", ")}.`);
+        }
+        this.setState({...this.state, userFlowState: state});
     }
 
     render()
     {
-        const blurInterface = this.state.previewItem !== null;
+        const blurInterface = this.state.previewItem.item !== null;
         return (
         <div className="store">
             <div className="store-title">Demo App</div>
@@ -137,10 +178,14 @@ import '../utils/swipe'
             items={this.state.cart}
             updateCartEntry={(item, amount) => this.updateCartEntry(item, amount)}
             clearItem={() => null}//this.itemAddedToPreCart(null)}
-            storeConfig={this.storeConfig}/>
+            storeConfig={this.storeConfig}
+            userFlowState={this.state.userFlowState}
+            setUserFlowState={(state) => this.setUserFlowState(state)}
+            userStates={this.userStates}/>
+
             <ItemPreview
-            item={this.state.previewItem}
-            onClick={(item, amount) => this.updateCartEntry(item, amount)}/>
+            itemDetails={this.state.previewItem}
+            onClick={(item) => this.addItemToCart(item)}/>
         </div>
         );
     }

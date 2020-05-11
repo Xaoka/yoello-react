@@ -8,7 +8,10 @@ export default class CartItem extends React.Component
     renderAmountButton(func, limit, text)
     {
         return <button className="amount-button"
-        onClick={() => this.props.setAmount(this.props.item, func(this.props.amount))}disabled={this.props.amount === limit}>{text}</button>
+            onClick={() =>this.props.setAmount(this.props.item, func(this.props.amount))}
+            disabled={this.props.amount === limit}>
+            {text}
+        </button>
     }
 
     render()

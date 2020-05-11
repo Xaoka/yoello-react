@@ -9,19 +9,17 @@ import { formatAsCurrency } from '../utils/text';
     constructor(props)
     {
         super(props);
-        this.windowStates = { CLOSED: "CLOSED", PREVIEW: "PREVIEW", OPEN: "OPEN" }
         this.tipStyles =
         {
             ZERO: (sub) => 0,
-            ROUND_UP: (sub) => 100 - (sub % 100),
+            ROUND_UP: (sub) => (100 * (Math.ceil(sub / 100))) - sub,
             TEN_PERCENT: (sub) => sub * 0.1,
             CUSTOM: (sub) => sub
         }
-        this._internalState = this.windowStates.CLOSED;
         this.state =
         {
-            windowState: this.windowStates.CLOSED,
-            tipStyle: this.tipStyles.ROUND_UP
+            tipStyle: this.tipStyles.ROUND_UP,
+            freshCartItem: null
         }
     }
 
@@ -36,39 +34,17 @@ import { formatAsCurrency } from '../utils/text';
     }
 
     /**
-     * Sets the tip style if the input is a valid tip style
-     * @param {string} state 
-     */
-    handleStateChange(state)
-    {
-        // TODO: Revisit this function, state duplication
-        if (!this.windowStates[state]) { throw Error(`Invalid cart state ${state} was set.`)}
-        let newState = state;
-        
-        // if (this.state.windowState === this.windowStates.CLOSED && this.props.item)
-        // {
-        //     newState = this.windowStates.PREVIEW;
-        // }
-        // else if (this.state.windowState === this.windowStates.PREVIEW && !this.props.item)
-        // {
-        //     newState = this.windowStates.CLOSED;
-        // }
-        this._internalState = newState;
-        this.setState({...this.state, windowState: state});
-    }
-
-    /**
      * Toggles the window state between OPEN and CLOSED
      */
     toggleOpen()
     {
-        if (this.state.windowState === this.windowStates.OPEN)
+        if (this.props.userFlowState === this.props.userStates.CART)
         {
-            this.handleStateChange(this.windowStates.CLOSED);
+            this.props.setUserFlowState(this.props.userStates.STORE);
         }
         else
         {
-            this.handleStateChange(this.windowStates.OPEN);
+            this.props.setUserFlowState(this.props.userStates.CART);
         }
     }
 
@@ -88,6 +64,7 @@ import { formatAsCurrency } from '../utils/text';
 
     renderCartItems()
     {
+        // TODO: Sort by order added to cart
         const itemEntryKeys = Object.keys(this.props.items);
         if (itemEntryKeys.length > 0)
         {
@@ -113,14 +90,15 @@ import { formatAsCurrency } from '../utils/text';
     {
         // Calculate how far up to slide the window
         let offset;
-        switch (this._internalState)
+        switch (this.props.userFlowState)
         {
-            case this.windowStates.OPEN:
+            case this.props.userStates.CART:
                 offset = 0;
                 break;
-            case this.windowStates.PREVIEW:
-                offset = -475;
+            case this.props.userStates.NEW_ITEM:
+                offset = -455;
                 break;
+            case this.props.userStates.STORE:
             default:
                 offset = -550;
         }
